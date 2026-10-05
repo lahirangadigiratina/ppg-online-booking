@@ -1,10 +1,13 @@
 import {
+  BookOpen,
+  Boxes,
   Briefcase,
   Box,
   Luggage,
   Mail,
-  Package,
+  PackageOpen,
   ShoppingBag,
+  Cuboid,
 } from 'lucide-react'
 import type { ParcelSizeOption } from './ParcelSizeCard'
 
@@ -21,7 +24,7 @@ export const PARCEL_SIZE_OPTIONS: ParcelSizeOption[] = [
     label: 'Satchel',
     dimensions: '25×15×5cm',
     weight: 'Up to 500g',
-    icon: Package,
+    icon: BookOpen,
   },
   {
     id: 'handbag',
@@ -47,8 +50,29 @@ export const PARCEL_SIZE_OPTIONS: ParcelSizeOption[] = [
   {
     id: 'carry-on',
     label: 'Carry On',
-    dimensions: '50×40×20cm',
+    dimensions: '55×40×20cm',
     weight: 'Up to 12kg',
+    icon: Boxes,
+  },
+  {
+    id: 'large-box',
+    label: 'Large Box',
+    dimensions: '60×40×25cm',
+    weight: 'Up to 15kg',
+    icon: Cuboid,
+  },
+  {
+    id: 'suitcase',
+    label: 'Suitcase',
+    dimensions: '70×45×25cm',
+    weight: 'Up to 20kg',
     icon: Luggage,
+  },
+  {
+    id: 'heavy-crate',
+    label: 'Heavy Crate',
+    dimensions: '75×45×29cm',
+    weight: 'Up to 25kg',
+    icon: PackageOpen,
   },
 ]

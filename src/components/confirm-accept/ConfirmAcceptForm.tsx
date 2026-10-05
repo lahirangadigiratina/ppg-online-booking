@@ -1,19 +1,72 @@
-import { AlertTriangle, Check, Timer } from 'lucide-react'
+import { Check, Timer } from 'lucide-react'
+import { useState, type ReactNode } from 'react'
+import { PrivacyPolicyModal } from '../legal/PrivacyPolicyModal'
+import { TermsAndConditionsModal } from '../legal/TermsAndConditionsModal'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
+import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
+
+type ConfirmCheckboxProps = {
+  checked: boolean
+  onCheckedChange: (checked: boolean) => void
+  label: string
+  children: ReactNode
+}
+
+function ConfirmCheckbox({
+  checked,
+  onCheckedChange,
+  label,
+  children,
+}: ConfirmCheckboxProps) {
+  return (
+    <div className="flex items-start gap-3">
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={checked}
+        aria-label={label}
+        onClick={() => onCheckedChange(!checked)}
+        className={`mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${
+          checked
+            ? 'bg-ppg-orange text-white'
+            : 'border-2 border-[#d8d8d8] bg-white'
+        }`}
+      >
+        {checked ? (
+          <Check className="size-3.5" strokeWidth={3} aria-hidden />
+        ) : null}
+      </button>
+      <div className="min-w-0 flex-1 text-sm leading-snug text-black">{children}</div>
+    </div>
+  )
+}
 
 type ConfirmAcceptFormProps = {
+  onBack: () => void
   onContinueToPayment: () => void
 }
 
 const PRICE_LINES = [
   { label: 'Delivery', amount: '$10.85' },
+  { label: 'Fuel Surcharge', amount: '$1.50' },
   { label: 'Packaging Fee', amount: '$3.00' },
   { label: 'Signature on Delivery', amount: '$2.20' },
-  { label: 'GST (10%)', amount: '$1.61' },
+  { label: 'GST (10%)', amount: '$1.76' },
 ] as const
 
-export function ConfirmAcceptForm({ onContinueToPayment }: ConfirmAcceptFormProps) {
+const CONFIRM_TOTAL = '$19.31'
+
+export function ConfirmAcceptForm({
+  onBack,
+  onContinueToPayment,
+}: ConfirmAcceptFormProps) {
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [noDangerousGoods, setNoDangerousGoods] = useState(false)
+  const [termsOpen, setTermsOpen] = useState(false)
+  const [privacyOpen, setPrivacyOpen] = useState(false)
+
   return (
     <>
       <ParcelPointLogo />
@@ -23,44 +76,60 @@ export function ConfirmAcceptForm({ onContinueToPayment }: ConfirmAcceptFormProp
         <StepHeading step={7} title="Confirm & Accept" />
 
         <section className="rounded-2xl border border-ppg-border bg-white p-4">
-          <div className="flex gap-3 border-b border-ppg-border pb-4">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-ppg-orange text-white">
-              <Check className="size-4" strokeWidth={3} aria-hidden />
-            </span>
-            <p className="text-sm leading-snug text-black">
-              I agree to the{' '}
-              <a
-                href="#terms"
-                className="font-medium text-ppg-orange underline underline-offset-2"
-                onClick={(event) => event.preventDefault()}
-              >
-                Terms &amp; Conditions
-              </a>{' '}
-              and{' '}
-              <a
-                href="#privacy"
-                className="font-medium text-ppg-orange underline underline-offset-2"
-                onClick={(event) => event.preventDefault()}
-              >
-                Privacy Policy
-              </a>
-              .
-            </p>
-          </div>
+          <ConfirmCheckbox
+            checked={termsAccepted}
+            onCheckedChange={setTermsAccepted}
+            label="I agree to the Terms and Conditions and Privacy Policy"
+          >
+            I agree to the{' '}
+            <button
+              type="button"
+              className="font-medium text-ppg-orange underline underline-offset-2"
+              onClick={() => setTermsOpen(true)}
+            >
+              Terms &amp; Conditions
+            </button>{' '}
+            and{' '}
+            <button
+              type="button"
+              className="font-medium text-ppg-orange underline underline-offset-2"
+              onClick={() => setPrivacyOpen(true)}
+            >
+              Privacy Policy
+            </button>
+            .
+          </ConfirmCheckbox>
 
-          <div className="flex gap-3 pt-4">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#e8b923] text-white">
-              <AlertTriangle className="size-4" strokeWidth={2.5} aria-hidden />
-            </span>
-            <div>
-              <p className="text-sm font-bold text-black">No dangerous goods</p>
-              <p className="mt-1 text-sm leading-snug text-ppg-label">
-                I confirm this parcel does not contain prohibited or dangerous
-                goods.
-              </p>
-            </div>
-          </div>
+          <hr className="my-4 border-0 border-t border-ppg-border" />
+
+          <ConfirmCheckbox
+            checked={noDangerousGoods}
+            onCheckedChange={setNoDangerousGoods}
+            label="No dangerous goods"
+          >
+            <p className="font-bold text-black">No dangerous goods</p>
+            <p className="mt-1 text-ppg-label">
+              I confirm this parcel does not contain prohibited or dangerous
+              goods.
+            </p>
+          </ConfirmCheckbox>
         </section>
+
+        <TermsAndConditionsModal
+          open={termsOpen}
+          onClose={() => setTermsOpen(false)}
+        />
+        <PrivacyPolicyModal
+          open={privacyOpen}
+          onClose={() => setPrivacyOpen(false)}
+        />
+
+        <input type="hidden" name="termsAccepted" value={termsAccepted ? 'yes' : 'no'} />
+        <input
+          type="hidden"
+          name="noDangerousGoods"
+          value={noDangerousGoods ? 'yes' : 'no'}
+        />
 
         <section className="rounded-2xl border border-ppg-border bg-white p-4">
           <div className="flex items-start gap-2.5">
@@ -91,17 +160,19 @@ export function ConfirmAcceptForm({ onContinueToPayment }: ConfirmAcceptFormProp
 
           <div className="flex items-center justify-between gap-3">
             <span className="text-lg font-bold text-black">Total</span>
-            <span className="text-lg font-bold text-black">$17.66</span>
+            <span className="text-lg font-bold text-black">{CONFIRM_TOTAL}</span>
           </div>
         </section>
 
-        <button
-          type="button"
-          onClick={onContinueToPayment}
-          className="mt-1 w-full rounded-full bg-ppg-orange py-3.5 text-base font-bold text-white transition-colors hover:bg-ppg-orange-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
-        >
-          Continue to Payment
-        </button>
+        <FormStepFooter onBack={onBack} className="mt-1">
+          <ContinueButton
+            type="button"
+            onClick={onContinueToPayment}
+            className="min-w-0 px-5 text-sm"
+          >
+            Continue to Payment
+          </ContinueButton>
+        </FormStepFooter>
       </div>
     </>
   )

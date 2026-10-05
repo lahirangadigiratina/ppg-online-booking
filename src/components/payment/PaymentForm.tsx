@@ -2,17 +2,20 @@ import { CreditCard, Store } from 'lucide-react'
 import { useState } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
+import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
 import { PaymentMethodCard } from './PaymentMethodCard'
 
 export type PaymentMethod = 'online' | 'in-store'
 
 type PaymentFormProps = {
+  onBack: () => void
   onPayNow: (method: PaymentMethod) => void
 }
 
 const TOTAL_AMOUNT = '$17.66'
 
-export function PaymentForm({ onPayNow }: PaymentFormProps) {
+export function PaymentForm({ onBack, onPayNow }: PaymentFormProps) {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('online')
 
   return (
@@ -21,6 +24,7 @@ export function PaymentForm({ onPayNow }: PaymentFormProps) {
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault()
@@ -58,12 +62,9 @@ export function PaymentForm({ onPayNow }: PaymentFormProps) {
           </p>
         </div>
 
-        <button
-          type="submit"
-          className="w-full rounded-full bg-ppg-orange py-3.5 text-base font-bold text-white transition-colors hover:bg-ppg-orange-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
-        >
-          Pay Now
-        </button>
+        <FormStepFooter onBack={onBack}>
+          <ContinueButton type="submit">Pay Now</ContinueButton>
+        </FormStepFooter>
       </form>
     </>
   )

@@ -1,23 +1,35 @@
-import { Search } from 'lucide-react'
 import { useState } from 'react'
 import collectParcelPointIcon from '../../assets/icon-collect-parcelpoint.png'
 import deliverToDoorIcon from '../../assets/icon-deliver-to-door.png'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { AddressSearchSelect } from '../form/AddressSearchSelect'
 import { FormField } from '../form/FormField'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
+import type { CollectStore } from './collectStoreOptions'
+import { CollectParcelPointModal } from './CollectParcelPointModal'
 import { DeliveryOptionCard } from './DeliveryOptionCard'
+import type { CollectRadiusOption } from './CollectRadiusSelect'
 
 type DeliveryMethod = 'door' | 'parcelpoint'
 
 type DeliveryDestinationFormProps = {
+  onBack: () => void
   onContinue: () => void
 }
 
 export function DeliveryDestinationForm({
+  onBack,
   onContinue,
 }: DeliveryDestinationFormProps) {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('door')
+  const [collectRadius, setCollectRadius] =
+    useState<CollectRadiusOption>('2 km')
+  const [collectModalOpen, setCollectModalOpen] = useState(false)
+  const [selectedCollectStore, setSelectedCollectStore] = useState<
+    CollectStore | undefined
+  >()
 
   return (
     <>
@@ -25,6 +37,7 @@ export function DeliveryDestinationForm({
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault()
@@ -34,22 +47,7 @@ export function DeliveryDestinationForm({
         <StepHeading step={4} title="Where's it going?" />
 
         <FormField label="Receiver Address" htmlFor="receiverAddress">
-          <div className="relative">
-            <Search
-              className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-ppg-label"
-              strokeWidth={2}
-              aria-hidden
-            />
-            <input
-              id="receiverAddress"
-              name="receiverAddress"
-              type="search"
-              placeholder="Search for an address"
-              required
-              className="w-full rounded-[10px] border border-ppg-border bg-white py-3.5 pl-11 pr-4 text-base text-black outline-none transition-colors placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
-              autoComplete="street-address"
-            />
-          </div>
+          <AddressSearchSelect id="receiverAddress" name="receiverAddress" />
         </FormField>
 
         <section className="flex flex-col gap-3">
@@ -60,44 +58,68 @@ export function DeliveryDestinationForm({
           <div className="flex flex-col gap-3">
             <DeliveryOptionCard
               title="Deliver to Door"
-              description="3 business days after drop off"
-              price="$10.85"
-              tag="Popular choice"
-              tagClassName="bg-[#e8f4fc] text-[#3d7ea6]"
-              iconSrc={collectParcelPointIcon}
+              subtitle="Bondi Junction 2022"
+              price="$11.50"
+              tags={[
+                { emoji: '⭐', label: 'Popular choice' },
+                { emoji: '🏠', label: 'Straight to their door' },
+              ]}
+              iconSrc={deliverToDoorIcon}
               iconAlt="Deliver to door"
-              iconContainerClassName={
-                deliveryMethod === 'door'
-                  ? 'border-ppg-orange'
-                  : 'border-ppg-border'
-              }
+              footerAddress="25 Spring St, Bondi Junction NSW 2022"
+              footerDeliveredByDate="Mon, 12 Oct"
               selected={deliveryMethod === 'door'}
-              recommended
-              onSelect={() => setDeliveryMethod('door')}
+              onSelect={() => {
+                setDeliveryMethod('door')
+                setCollectModalOpen(false)
+              }}
             />
 
             <DeliveryOptionCard
               title="Collect from PARCELPOINT"
-              description="They collect when it's ready"
-              price="$5.94"
-              tag="Often lower cost"
-              tagClassName="bg-[#f0f0f0] text-ppg-label"
-              iconSrc={deliverToDoorIcon}
-              iconAlt="Collect from PARCELPOINT"
-              iconContainerClassName={
-                deliveryMethod === 'parcelpoint'
-                  ? 'border-ppg-orange'
-                  : 'border-ppg-border'
+              subtitle={
+                deliveryMethod === 'parcelpoint' && selectedCollectStore
+                  ? `${selectedCollectStore.name} · ${collectRadius}`
+                  : deliveryMethod === 'parcelpoint'
+                    ? `Within ${collectRadius} · Tap to choose a store`
+                    : "They collect when they're ready"
               }
+              price="$11.50"
+              tags={[
+                { emoji: '✅', label: 'Held until collection' },
+                { emoji: '💰', label: 'Often lower cost' },
+                { emoji: '⏰', label: 'Hours that suit them' },
+              ]}
+              iconSrc={collectParcelPointIcon}
+              iconAlt="Collect from PARCELPOINT"
               selected={deliveryMethod === 'parcelpoint'}
-              onSelect={() => setDeliveryMethod('parcelpoint')}
+              onSelect={() => {
+                setDeliveryMethod('parcelpoint')
+                setCollectModalOpen(true)
+              }}
             />
           </div>
         </section>
 
-        <div className="flex justify-end pt-2">
+        <input type="hidden" name="collectRadius" value={collectRadius} />
+        <input
+          type="hidden"
+          name="collectStoreId"
+          value={selectedCollectStore?.id ?? ''}
+        />
+
+        <CollectParcelPointModal
+          open={collectModalOpen}
+          radius={collectRadius}
+          selectedStoreId={selectedCollectStore?.id}
+          onRadiusChange={setCollectRadius}
+          onSelectStore={setSelectedCollectStore}
+          onClose={() => setCollectModalOpen(false)}
+        />
+
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
-        </div>
+        </FormStepFooter>
       </form>
     </>
   )

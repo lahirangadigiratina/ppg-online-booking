@@ -55,7 +55,7 @@ export function BookingPage() {
     step === 'booking-success'
 
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center px-4 py-8">
+    <div className="flex h-[100dvh] min-h-0 w-full flex-col items-center overflow-hidden sm:h-auto sm:min-h-svh sm:justify-center sm:overflow-visible sm:bg-[#f3f3f3] sm:px-4 sm:py-8">
       <PhoneFrame
         contentKey={step}
         screenHeight={
@@ -74,40 +74,58 @@ export function BookingPage() {
           />
         )}
         {step === 'your-details' && (
-          <YourDetailsForm onContinue={() => setStep('receiver-details')} />
+          <YourDetailsForm
+            onBack={() => setStep('parcel-size-packaging')}
+            onContinue={() => setStep('receiver-details')}
+          />
         )}
         {step === 'receiver-details' && (
           <ReceiverDetailsForm
+            onBack={() => setStep('your-details')}
             onContinue={() => setStep('delivery-destination')}
           />
         )}
         {step === 'delivery-destination' && (
           <DeliveryDestinationForm
+            onBack={() => setStep('receiver-details')}
             onContinue={() => setStep('parcel-contents')}
           />
         )}
         {step === 'parcel-contents' && (
-          <ParcelContentsForm onContinue={() => setStep('add-ons')} />
+          <ParcelContentsForm
+            onBack={() => setStep('delivery-destination')}
+            onContinue={() => setStep('add-ons')}
+          />
         )}
         {step === 'add-ons' && (
-          <AddOnsForm onContinue={() => setStep('confirm-accept')} />
+          <AddOnsForm
+            onBack={() => setStep('parcel-contents')}
+            onContinue={() => setStep('confirm-accept')}
+          />
         )}
         {step === 'confirm-accept' && (
           <ConfirmAcceptForm
+            onBack={() => setStep('add-ons')}
             onContinueToPayment={() => setStep('payment')}
           />
         )}
         {step === 'payment' && (
           <PaymentForm
+            onBack={() => setStep('confirm-accept')}
             onPayNow={(method) =>
               setStep(method === 'in-store' ? 'agent-qr' : 'pay-online')
             }
           />
         )}
         {step === 'agent-qr' && (
-          <ShowAgentQrScreen onAgentScanned={handleAgentScanned} />
+          <ShowAgentQrScreen
+            onBack={() => setStep('payment')}
+            onAgentScanned={handleAgentScanned}
+          />
         )}
-        {step === 'pay-online' && <PayOnlineScreen />}
+        {step === 'pay-online' && (
+          <PayOnlineScreen onBack={() => setStep('payment')} />
+        )}
         {step === 'booking-success' && <BookingSuccessScreen />}
       </PhoneFrame>
     </div>

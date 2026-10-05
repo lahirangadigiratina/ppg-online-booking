@@ -4,27 +4,30 @@ import { TextInput } from '../form/TextInput'
 import { VerifiedMobileField } from '../form/VerifiedMobileField'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
 
 const MOCK_PHONE = '+61 447 317 773'
 
 type YourDetailsFormProps = {
+  onBack: () => void
   onContinue: () => void
 }
 
-export function YourDetailsForm({ onContinue }: YourDetailsFormProps) {
+export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
   return (
     <>
       <ParcelPointLogo />
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault()
           onContinue()
         }}
       >
-        <StepHeading step={2} title="Your Details" />
+        <StepHeading step={2} title="Your Details" bracket="Sender" />
 
         <VerifiedMobileField phoneNumber={MOCK_PHONE} />
 
@@ -33,7 +36,7 @@ export function YourDetailsForm({ onContinue }: YourDetailsFormProps) {
             id="businessName"
             name="businessName"
             type="text"
-            placeholder="e.g., Hubbed"
+            placeholder="Hubbed"
             autoComplete="organization"
           />
         </FormField>
@@ -50,9 +53,8 @@ export function YourDetailsForm({ onContinue }: YourDetailsFormProps) {
             id="firstName"
             name="firstName"
             type="text"
-            placeholder="e.g., Jane"
+            placeholder="Jane"
             autoComplete="given-name"
-            required
           />
         </FormField>
 
@@ -68,9 +70,8 @@ export function YourDetailsForm({ onContinue }: YourDetailsFormProps) {
             id="lastName"
             name="lastName"
             type="text"
-            placeholder="e.g., Smith"
+            placeholder="Smith"
             autoComplete="family-name"
-            required
           />
         </FormField>
 
@@ -88,13 +89,12 @@ export function YourDetailsForm({ onContinue }: YourDetailsFormProps) {
             type="email"
             placeholder="jane@example.com"
             autoComplete="email"
-            required
           />
         </FormField>
 
-        <div className="flex justify-end pt-2">
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
-        </div>
+        </FormStepFooter>
       </form>
     </>
   )

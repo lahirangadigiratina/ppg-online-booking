@@ -1,15 +1,20 @@
 import { useEffect } from 'react'
 import paymentQrImage from '../../assets/payment-qr-only.png'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { BackButton } from '../ui/BackButton'
 
 const TOTAL_AMOUNT = '$17.66'
 const AGENT_SCAN_DELAY_MS = 6000
 
 type ShowAgentQrScreenProps = {
+  onBack: () => void
   onAgentScanned: () => void
 }
 
-export function ShowAgentQrScreen({ onAgentScanned }: ShowAgentQrScreenProps) {
+export function ShowAgentQrScreen({
+  onBack,
+  onAgentScanned,
+}: ShowAgentQrScreenProps) {
   useEffect(() => {
     const timerId = window.setTimeout(onAgentScanned, AGENT_SCAN_DELAY_MS)
     return () => window.clearTimeout(timerId)
@@ -46,6 +51,10 @@ export function ShowAgentQrScreen({ onAgentScanned }: ShowAgentQrScreenProps) {
           />
           Waiting for agent to scan…
         </p>
+
+        <div className="flex w-full justify-start">
+          <BackButton onClick={onBack} />
+        </div>
       </div>
     </>
   )

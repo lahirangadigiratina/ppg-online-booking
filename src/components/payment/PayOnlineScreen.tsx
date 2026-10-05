@@ -1,9 +1,14 @@
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
+import { BackButton } from '../ui/BackButton'
 
 const TOTAL_AMOUNT = '$17.66'
 
-export function PayOnlineScreen() {
+type PayOnlineScreenProps = {
+  onBack: () => void
+}
+
+export function PayOnlineScreen({ onBack }: PayOnlineScreenProps) {
   return (
     <>
       <ParcelPointLogo />
@@ -17,6 +22,9 @@ export function PayOnlineScreen() {
         </p>
         <div className="w-full rounded-2xl border border-ppg-border bg-[#fafafa] px-4 py-8 text-sm text-ppg-label">
           Secure payment gateway placeholder
+        </div>
+        <div className="flex w-full justify-start">
+          <BackButton onClick={onBack} />
         </div>
       </div>
     </>

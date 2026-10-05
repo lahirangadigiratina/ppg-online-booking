@@ -9,13 +9,11 @@ import {
 type ParcelContentsSelectProps = {
   id?: string
   name?: string
-  required?: boolean
 }
 
 export function ParcelContentsSelect({
   id: idProp,
   name = 'parcelContents',
-  required = true,
 }: ParcelContentsSelectProps) {
   const generatedId = useId()
   const id = idProp ?? generatedId
@@ -53,7 +51,6 @@ export function ParcelContentsSelect({
         type="hidden"
         name={name}
         value={selected.value}
-        required={required}
       />
 
       <button

@@ -3,18 +3,24 @@ import { FormField } from '../form/FormField'
 import { TextInput } from '../form/TextInput'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
 
 type ReceiverDetailsFormProps = {
+  onBack: () => void
   onContinue: () => void
 }
 
-export function ReceiverDetailsForm({ onContinue }: ReceiverDetailsFormProps) {
+export function ReceiverDetailsForm({
+  onBack,
+  onContinue,
+}: ReceiverDetailsFormProps) {
   return (
     <>
       <ParcelPointLogo />
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault()
@@ -31,7 +37,7 @@ export function ReceiverDetailsForm({ onContinue }: ReceiverDetailsFormProps) {
             id="receiverBusinessName"
             name="receiverBusinessName"
             type="text"
-            placeholder="e.g., Jane's Bookstore"
+            placeholder="Jane's Bookstore"
             autoComplete="organization"
           />
         </FormField>
@@ -48,9 +54,8 @@ export function ReceiverDetailsForm({ onContinue }: ReceiverDetailsFormProps) {
             id="receiverFirstName"
             name="receiverFirstName"
             type="text"
-            placeholder="e.g., Jane"
+            placeholder="Jane"
             autoComplete="given-name"
-            required
           />
         </FormField>
 
@@ -66,49 +71,44 @@ export function ReceiverDetailsForm({ onContinue }: ReceiverDetailsFormProps) {
             id="receiverLastName"
             name="receiverLastName"
             type="text"
-            placeholder="e.g., Smith"
+            placeholder="Smith"
             autoComplete="family-name"
-            required
           />
         </FormField>
 
-        <div className="grid grid-cols-1 gap-6 min-[360px]:grid-cols-2 min-[360px]:gap-4">
-          <FormField
-            label={
-              <>
-                Email <span className="text-red-500">*</span>
-              </>
-            }
-            htmlFor="receiverEmail"
-          >
-            <TextInput
-              id="receiverEmail"
-              name="receiverEmail"
-              type="email"
-              placeholder="jane@example.com"
-              autoComplete="email"
-              required
-            />
-          </FormField>
+        <FormField
+          label={
+            <>
+              Email <span className="text-red-500">*</span>
+            </>
+          }
+          htmlFor="receiverEmail"
+        >
+          <TextInput
+            id="receiverEmail"
+            name="receiverEmail"
+            type="email"
+            placeholder="jane@example.com"
+            autoComplete="email"
+          />
+        </FormField>
 
-          <FormField
-            label={
-              <>
-                Mobile <span className="text-red-500">*</span>
-              </>
-            }
-            htmlFor="receiverMobile"
-          >
-            <TextInput
-              id="receiverMobile"
-              name="receiverMobile"
-              type="tel"
-              placeholder="0412 345 678"
-              autoComplete="tel"
-              required
-            />
-          </FormField>
-        </div>
+        <FormField
+          label={
+            <>
+              Mobile <span className="text-red-500">*</span>
+            </>
+          }
+          htmlFor="receiverMobile"
+        >
+          <TextInput
+            id="receiverMobile"
+            name="receiverMobile"
+            type="tel"
+            placeholder="+61 412 345 678"
+            autoComplete="tel"
+          />
+        </FormField>
 
         <label className="flex cursor-pointer items-start gap-3">
           <input
@@ -121,9 +121,9 @@ export function ReceiverDetailsForm({ onContinue }: ReceiverDetailsFormProps) {
           </span>
         </label>
 
-        <div className="flex justify-end pt-2">
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
-        </div>
+        </FormStepFooter>
       </form>
     </>
   )

@@ -3,15 +3,19 @@ import { useState } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
 import { AddOnOptionCard } from './AddOnOptionCard'
+import { ParcelProtectionModal } from './ParcelProtectionModal'
 
 type AddOnsFormProps = {
+  onBack: () => void
   onContinue: () => void
 }
 
-export function AddOnsForm({ onContinue }: AddOnsFormProps) {
+export function AddOnsForm({ onBack, onContinue }: AddOnsFormProps) {
   const [signatureOnDelivery, setSignatureOnDelivery] = useState(true)
-  const [parcelProtection, setParcelProtection] = useState(false)
+  const [parcelProtection, setParcelProtection] = useState(true)
+  const [protectionInfoOpen, setProtectionInfoOpen] = useState(false)
 
   return (
     <>
@@ -19,6 +23,7 @@ export function AddOnsForm({ onContinue }: AddOnsFormProps) {
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault()
@@ -36,7 +41,7 @@ export function AddOnsForm({ onContinue }: AddOnsFormProps) {
           <AddOnOptionCard
             title="Signature on Delivery"
             description="Recipient must sign upon delivery"
-            price="$2.20"
+            price="+$3.50"
             icon={PenLine}
             selected={signatureOnDelivery}
             onToggle={() => setSignatureOnDelivery((previous) => !previous)}
@@ -44,13 +49,20 @@ export function AddOnsForm({ onContinue }: AddOnsFormProps) {
 
           <AddOnOptionCard
             title="Parcel Protection"
-            description="Covers your parcel valued at $50"
-            price="$5.50"
+            description="Cover your parcel valued at $74"
+            price="+$2.50"
             icon={Shield}
             selected={parcelProtection}
             onToggle={() => setParcelProtection((previous) => !previous)}
+            linkLabel="Parcel Protection"
+            onLinkClick={() => setProtectionInfoOpen(true)}
           />
         </div>
+
+        <ParcelProtectionModal
+          open={protectionInfoOpen}
+          onClose={() => setProtectionInfoOpen(false)}
+        />
 
         <input
           type="hidden"
@@ -63,9 +75,9 @@ export function AddOnsForm({ onContinue }: AddOnsFormProps) {
           value={parcelProtection ? 'yes' : 'no'}
         />
 
-        <div className="flex justify-end pt-2">
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
-        </div>
+        </FormStepFooter>
       </form>
     </>
   )

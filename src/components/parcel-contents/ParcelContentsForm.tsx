@@ -1,18 +1,22 @@
 import { Camera } from 'lucide-react'
-import { useId } from 'react'
+import { useId, useState } from 'react'
+import { DangerousGoodsModal } from './DangerousGoodsModal'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { FormField } from '../form/FormField'
 import { TextInput } from '../form/TextInput'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
 import { ParcelContentsSelect } from './ParcelContentsSelect'
 
 type ParcelContentsFormProps = {
+  onBack: () => void
   onContinue: () => void
 }
 
-export function ParcelContentsForm({ onContinue }: ParcelContentsFormProps) {
+export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormProps) {
   const photoInputId = useId()
+  const [dangerousGoodsOpen, setDangerousGoodsOpen] = useState(false)
 
   return (
     <>
@@ -20,6 +24,7 @@ export function ParcelContentsForm({ onContinue }: ParcelContentsFormProps) {
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault()
@@ -32,17 +37,22 @@ export function ParcelContentsForm({ onContinue }: ParcelContentsFormProps) {
             title="Parcel Contents"
             titleClassName="whitespace-nowrap"
           />
-          <a
-            href="#dangerous-goods"
+          <button
+            type="button"
             className="shrink-0 text-xs font-medium text-ppg-orange underline underline-offset-2"
-            onClick={(event) => event.preventDefault()}
+            onClick={() => setDangerousGoodsOpen(true)}
           >
             Dangerous goods?
-          </a>
+          </button>
         </div>
 
+        <DangerousGoodsModal
+          open={dangerousGoodsOpen}
+          onClose={() => setDangerousGoodsOpen(false)}
+        />
+
         <FormField label="What's inside your parcel?" htmlFor="parcelContents">
-          <ParcelContentsSelect id="parcelContents" name="parcelContents" required />
+          <ParcelContentsSelect id="parcelContents" name="parcelContents" />
         </FormField>
 
         <FormField label="Parcel Value ($)" htmlFor="parcelValue">
@@ -53,7 +63,6 @@ export function ParcelContentsForm({ onContinue }: ParcelContentsFormProps) {
             min={0}
             step="0.01"
             defaultValue={50}
-            required
             className="font-semibold"
           />
         </FormField>
@@ -81,14 +90,14 @@ export function ParcelContentsForm({ onContinue }: ParcelContentsFormProps) {
             id="referenceNumber"
             name="referenceNumber"
             type="text"
-            placeholder="e.g. REF2026ORDER001"
+            placeholder="REF2026ORDER001"
             autoComplete="off"
           />
         </FormField>
 
-        <div className="flex justify-end pt-2">
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
-        </div>
+        </FormStepFooter>
       </form>
     </>
   )

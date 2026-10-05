@@ -21,6 +21,7 @@ export function ParcelSizePackagingForm({
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <form
+        noValidate
         className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault()
@@ -33,7 +34,7 @@ export function ParcelSizePackagingForm({
           <h2 className="text-sm font-normal text-ppg-label">
             What size best fits your parcel?
           </h2>
-          <div className="grid grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-3 gap-3">
             {PARCEL_SIZE_OPTIONS.map((option) => (
               <ParcelSizeCard
                 key={option.id}
@@ -45,9 +46,11 @@ export function ParcelSizePackagingForm({
           </div>
         </section>
 
-        <section className="flex flex-col gap-3">
-          <h2 className="text-sm font-normal text-ppg-label">
-            Do you need packaging? (this store offers it)
+        <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
+          <h2 className="text-sm font-normal leading-snug text-ppg-label">
+            Do you need packaging? (Adds a flat{' '}
+            <strong className="font-semibold text-black">$3.00</strong> packaging fee
+            to your total.)
           </h2>
           <div className="grid grid-cols-2 gap-3">
             <button
@@ -73,12 +76,6 @@ export function ParcelSizePackagingForm({
               No
             </button>
           </div>
-          {needsPackaging ? (
-            <p className="text-sm text-ppg-label">
-              Adds a flat <strong className="font-semibold text-black">$3.00</strong>{' '}
-              packaging fee to your total.
-            </p>
-          ) : null}
         </section>
 
         <div className="flex justify-end pt-2">
