@@ -3,11 +3,8 @@ import {
   Boxes,
   Briefcase,
   Box,
-  Luggage,
   Mail,
-  PackageOpen,
   ShoppingBag,
-  Cuboid,
 } from 'lucide-react'
 import type { ParcelSizeOption } from './ParcelSizeCard'
 
@@ -53,26 +50,5 @@ export const PARCEL_SIZE_OPTIONS: ParcelSizeOption[] = [
     dimensions: '55×40×20cm',
     weight: 'Up to 12kg',
     icon: Boxes,
-  },
-  {
-    id: 'large-box',
-    label: 'Large Box',
-    dimensions: '60×40×25cm',
-    weight: 'Up to 15kg',
-    icon: Cuboid,
-  },
-  {
-    id: 'suitcase',
-    label: 'Suitcase',
-    dimensions: '70×45×25cm',
-    weight: 'Up to 20kg',
-    icon: Luggage,
-  },
-  {
-    id: 'heavy-crate',
-    label: 'Heavy Crate',
-    dimensions: '75×45×29cm',
-    weight: 'Up to 25kg',
-    icon: PackageOpen,
   },
 ]

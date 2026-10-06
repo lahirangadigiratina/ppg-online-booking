@@ -55,7 +55,14 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
           <ParcelContentsSelect id="parcelContents" name="parcelContents" />
         </FormField>
 
-        <FormField label="Parcel Value ($)" htmlFor="parcelValue">
+        <FormField
+          label={
+            <>
+              Parcel Value ($) <span className="text-red-500">*</span>
+            </>
+          }
+          htmlFor="parcelValue"
+        >
           <TextInput
             id="parcelValue"
             name="parcelValue"

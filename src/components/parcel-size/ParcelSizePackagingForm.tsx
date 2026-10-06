@@ -48,9 +48,12 @@ export function ParcelSizePackagingForm({
 
         <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
           <h2 className="text-sm font-normal leading-snug text-ppg-label">
-            Do you need packaging? (Adds a flat{' '}
-            <strong className="font-semibold text-black">$3.00</strong> packaging fee
-            to your total.)
+            <span className="block">Do you need packaging?</span>
+            <span className="mt-1 block">
+              (Adds a flat{' '}
+              <strong className="font-semibold text-black">$3.00</strong> packaging fee
+              to your total.)
+            </span>
           </h2>
           <div className="grid grid-cols-2 gap-3">
             <button

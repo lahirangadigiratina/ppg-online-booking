@@ -44,7 +44,7 @@ export function DeliveryOptionCard({
       }`}
     >
       {selected ? (
-        <span className="absolute -right-0.5 -top-0.5 flex size-6 items-center justify-center rounded-full bg-ppg-orange text-white shadow-sm">
+        <span className="pointer-events-none absolute right-3 top-3 flex size-6 items-center justify-center rounded-full bg-ppg-orange text-white shadow-sm">
           <Check className="size-3.5" strokeWidth={3} aria-hidden />
         </span>
       ) : null}
@@ -63,7 +63,9 @@ export function DeliveryOptionCard({
         </span>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-2 pr-4">
+          <div
+            className={`flex items-start justify-between gap-2 ${selected ? 'pr-7' : ''}`}
+          >
             <div className="min-w-0">
               <p className="text-base font-bold leading-snug text-black">{title}</p>
               <p className="mt-0.5 text-sm text-ppg-label">{subtitle}</p>
