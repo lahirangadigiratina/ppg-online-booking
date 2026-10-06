@@ -170,7 +170,7 @@ export function ConfirmAcceptForm({
             onClick={onContinueToPayment}
             className="min-w-0 px-5 text-sm"
           >
-            Continue to Payment
+            Make Payment
           </ContinueButton>
         </FormStepFooter>
       </div>
