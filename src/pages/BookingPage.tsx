@@ -9,6 +9,7 @@ import {
 } from '../components/layout/PhoneFrame'
 import { PayOnlineScreen } from '../components/payment/PayOnlineScreen'
 import { PaymentForm } from '../components/payment/PaymentForm'
+import { ShowAgentQrScreen } from '../components/payment/ShowAgentQrScreen'
 import { ParcelContentsForm } from '../components/parcel-contents/ParcelContentsForm'
 import { ParcelSizePackagingForm } from '../components/parcel-size/ParcelSizePackagingForm'
 import { ReceiverDetailsForm } from '../components/receiver-details/ReceiverDetailsForm'
@@ -23,6 +24,7 @@ type BookingStep =
   | 'add-ons'
   | 'confirm-accept'
   | 'payment'
+  | 'agent-qr'
   | 'pay-online'
   | 'booking-success'
 
@@ -37,6 +39,10 @@ export function BookingPage() {
     )
   }, [])
 
+  const handleAgentScanned = useCallback(() => {
+    setStep('booking-success')
+  }, [])
+
   const lockPhoneHeight =
     step === 'receiver-details' ||
     step === 'delivery-destination' ||
@@ -44,6 +50,7 @@ export function BookingPage() {
     step === 'add-ons' ||
     step === 'confirm-accept' ||
     step === 'payment' ||
+    step === 'agent-qr' ||
     step === 'pay-online' ||
     step === 'booking-success'
 
@@ -106,10 +113,14 @@ export function BookingPage() {
           <PaymentForm
             onBack={() => setStep('confirm-accept')}
             onPayNow={(method) =>
-              setStep(
-                method === 'in-store' ? 'booking-success' : 'pay-online',
-              )
+              setStep(method === 'in-store' ? 'agent-qr' : 'pay-online')
             }
+          />
+        )}
+        {step === 'agent-qr' && (
+          <ShowAgentQrScreen
+            onBack={() => setStep('payment')}
+            onAgentScanned={handleAgentScanned}
           />
         )}
         {step === 'pay-online' && (

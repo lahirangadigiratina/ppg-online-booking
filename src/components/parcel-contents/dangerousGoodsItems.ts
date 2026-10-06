@@ -1,11 +1,11 @@
 import {
   Ban,
   Banknote,
-  Bomb,
   FlaskConical,
   Package,
   PawPrint,
   Pill,
+  PartyPopper,
   Snowflake,
   type LucideIcon,
 } from 'lucide-react'
@@ -29,7 +29,7 @@ export const DANGEROUS_GOODS_ITEMS: DangerousGoodsItem[] = [
     title: 'Weapons & Explosives',
     description:
       'Firearms, weapons, ammunition, explosives and fireworks',
-    icon: Bomb,
+    icon: PartyPopper,
   },
   {
     id: 'hazardous',

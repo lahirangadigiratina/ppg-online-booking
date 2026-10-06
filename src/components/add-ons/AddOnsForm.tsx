@@ -13,8 +13,8 @@ type AddOnsFormProps = {
 }
 
 export function AddOnsForm({ onBack, onContinue }: AddOnsFormProps) {
-  const [signatureOnDelivery, setSignatureOnDelivery] = useState(true)
-  const [parcelProtection, setParcelProtection] = useState(true)
+  const [signatureOnDelivery, setSignatureOnDelivery] = useState(false)
+  const [parcelProtection, setParcelProtection] = useState(false)
   const [protectionInfoOpen, setProtectionInfoOpen] = useState(false)
 
   return (
