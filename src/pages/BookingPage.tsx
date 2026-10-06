@@ -124,7 +124,10 @@ export function BookingPage() {
           />
         )}
         {step === 'pay-online' && (
-          <PayOnlineScreen onBack={() => setStep('payment')} />
+          <PayOnlineScreen
+            onBack={() => setStep('payment')}
+            onPaymentComplete={() => setStep('booking-success')}
+          />
         )}
         {step === 'booking-success' && <BookingSuccessScreen />}
       </PhoneFrame>
