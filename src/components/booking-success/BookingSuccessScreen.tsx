@@ -86,13 +86,16 @@ export function BookingSuccessScreen() {
 
           <dl className="space-y-2 text-sm">
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-ppg-label">Booking Ref</dt>
-              <dd className="font-bold text-black">{BOOKING_REF}</dd>
+              <dt className="shrink-0 text-ppg-label">Booking Ref</dt>
+              <dd className="flex min-w-0 items-center justify-end gap-1 font-bold text-black">
+                <span className="tabular-nums">{BOOKING_REF}</span>
+                <span className="size-5 shrink-0" aria-hidden />
+              </dd>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <dt className="text-ppg-label">Tracking</dt>
-              <dd className="flex items-center justify-end gap-1 font-bold text-black">
-                <span>{TRACKING_NUMBER}</span>
+              <dt className="shrink-0 text-ppg-label">Tracking</dt>
+              <dd className="flex min-w-0 items-center justify-end gap-1 font-bold text-black">
+                <span className="tabular-nums">{TRACKING_NUMBER}</span>
                 <button
                   type="button"
                   onClick={() => void copyTracking()}

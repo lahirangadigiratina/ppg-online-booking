@@ -52,7 +52,7 @@ export function ParcelSizePackagingForm({
             <span className="mt-1 block">
               (Adds a flat{' '}
               <strong className="font-semibold text-black">$3.00</strong> packaging fee
-              to your total.)
+              to your total)
             </span>
           </h2>
           <div className="grid grid-cols-2 gap-3">

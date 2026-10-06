@@ -44,14 +44,6 @@ export function ShowAgentQrScreen({
           />
         </div>
 
-        <p className="flex items-center justify-center gap-2 text-sm text-ppg-label">
-          <span
-            className="size-2 shrink-0 rounded-full bg-ppg-orange"
-            aria-hidden
-          />
-          Waiting for agent to scan…
-        </p>
-
         <div className="flex w-full justify-start">
           <BackButton onClick={onBack} />
         </div>
