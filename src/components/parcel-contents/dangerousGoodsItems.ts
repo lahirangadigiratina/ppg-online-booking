@@ -5,16 +5,18 @@ import {
   Package,
   PawPrint,
   Pill,
-  PartyPopper,
-  Snowflake,
+  Swords,
   type LucideIcon,
 } from 'lucide-react'
+import { BreadBagIcon } from './icons/BreadBagIcon'
+
+export type DangerousGoodsIcon = LucideIcon | typeof BreadBagIcon
 
 export type DangerousGoodsItem = {
   id: string
   title: string
   description: string
-  icon: LucideIcon
+  icon: DangerousGoodsIcon
 }
 
 export const DANGEROUS_GOODS_ITEMS: DangerousGoodsItem[] = [
@@ -29,7 +31,7 @@ export const DANGEROUS_GOODS_ITEMS: DangerousGoodsItem[] = [
     title: 'Weapons & Explosives',
     description:
       'Firearms, weapons, ammunition, explosives and fireworks',
-    icon: PartyPopper,
+    icon: Swords,
   },
   {
     id: 'hazardous',
@@ -64,7 +66,7 @@ export const DANGEROUS_GOODS_ITEMS: DangerousGoodsItem[] = [
     title: 'Perishables',
     description:
       'Perishable goods or goods requiring refrigeration or temperature control',
-    icon: Snowflake,
+    icon: BreadBagIcon,
   },
   {
     id: 'specialist',
