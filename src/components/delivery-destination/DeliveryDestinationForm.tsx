@@ -44,7 +44,7 @@ export function DeliveryDestinationForm({
           onContinue()
         }}
       >
-        <StepHeading step={4} title="Where's it going?" />
+        <StepHeading step={4} title="Where are you sending to?" />
 
         <FormField label="Receiver Address" htmlFor="receiverAddress">
           <AddressSearchSelect id="receiverAddress" name="receiverAddress" />

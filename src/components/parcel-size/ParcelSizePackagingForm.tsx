@@ -12,8 +12,10 @@ type ParcelSizePackagingFormProps = {
 export function ParcelSizePackagingForm({
   onContinue,
 }: ParcelSizePackagingFormProps) {
-  const [selectedSizeId, setSelectedSizeId] = useState('handbag')
-  const [needsPackaging, setNeedsPackaging] = useState(true)
+  const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
+  const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
+
+  const canContinue = selectedSizeId !== null && needsPackaging !== null
 
   return (
     <>
@@ -25,6 +27,7 @@ export function ParcelSizePackagingForm({
         className="flex flex-col gap-5"
         onSubmit={(event) => {
           event.preventDefault()
+          if (!canContinue) return
           onContinue()
         }}
       >
@@ -60,7 +63,7 @@ export function ParcelSizePackagingForm({
               type="button"
               onClick={() => setNeedsPackaging(true)}
               className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                needsPackaging
+                needsPackaging === true
                   ? 'bg-black text-white'
                   : 'border border-ppg-border bg-white text-ppg-label'
               }`}
@@ -71,7 +74,7 @@ export function ParcelSizePackagingForm({
               type="button"
               onClick={() => setNeedsPackaging(false)}
               className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                !needsPackaging
+                needsPackaging === false
                   ? 'bg-black text-white'
                   : 'border border-ppg-border bg-white text-ppg-label'
               }`}
@@ -82,7 +85,15 @@ export function ParcelSizePackagingForm({
         </section>
 
         <div className="flex justify-end pt-2">
-          <ContinueButton type="submit" />
+          <ContinueButton
+            type="submit"
+            disabled={!canContinue}
+            className={
+              canContinue
+                ? ''
+                : 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
+            }
+          />
         </div>
       </form>
     </>

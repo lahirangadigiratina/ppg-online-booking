@@ -54,7 +54,7 @@ export function AddOnsForm({ onBack, onContinue }: AddOnsFormProps) {
             icon={Shield}
             selected={parcelProtection}
             onToggle={() => setParcelProtection((previous) => !previous)}
-            linkLabel="Parcel Protection"
+            linkLabel="Parcel Protection Conditions"
             onLinkClick={() => setProtectionInfoOpen(true)}
           />
         </div>
