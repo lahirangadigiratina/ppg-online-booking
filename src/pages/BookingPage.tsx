@@ -1,14 +1,12 @@
 import { useCallback, useState } from 'react'
-import { AddOnsForm } from '../components/add-ons/AddOnsForm'
+import type { DoorBookingRoute } from '../booking/bookingRoute'
 import { BookingSuccessScreen } from '../components/booking-success/BookingSuccessScreen'
 import { ConfirmAcceptForm } from '../components/confirm-accept/ConfirmAcceptForm'
-import { DeliveryDestinationForm } from '../components/delivery-destination/DeliveryDestinationForm'
 import {
   PHONE_SCREEN_MIN_HEIGHT_PX,
   PhoneFrame,
 } from '../components/layout/PhoneFrame'
 import { PayOnlineScreen } from '../components/payment/PayOnlineScreen'
-import { PaymentForm } from '../components/payment/PaymentForm'
 import { ShowAgentQrScreen } from '../components/payment/ShowAgentQrScreen'
 import { ParcelContentsForm } from '../components/parcel-contents/ParcelContentsForm'
 import { ParcelSizePackagingForm } from '../components/parcel-size/ParcelSizePackagingForm'
@@ -19,16 +17,17 @@ type BookingStep =
   | 'parcel-size-packaging'
   | 'your-details'
   | 'receiver-details'
-  | 'delivery-destination'
   | 'parcel-contents'
-  | 'add-ons'
   | 'confirm-accept'
   | 'payment'
   | 'agent-qr'
-  | 'pay-online'
   | 'booking-success'
 
-export function BookingPage() {
+type BookingPageProps = {
+  doorBookingRoute: DoorBookingRoute
+}
+
+export function BookingPage({ doorBookingRoute }: BookingPageProps) {
   const [step, setStep] = useState<BookingStep>('parcel-size-packaging')
   const [phoneScreenHeight, setPhoneScreenHeight] = useState<number>()
 
@@ -44,14 +43,12 @@ export function BookingPage() {
   }, [])
 
   const lockPhoneHeight =
+    step === 'parcel-size-packaging' ||
     step === 'receiver-details' ||
-    step === 'delivery-destination' ||
     step === 'parcel-contents' ||
-    step === 'add-ons' ||
     step === 'confirm-accept' ||
     step === 'payment' ||
     step === 'agent-qr' ||
-    step === 'pay-online' ||
     step === 'booking-success'
 
   return (
@@ -70,6 +67,7 @@ export function BookingPage() {
       >
         {step === 'parcel-size-packaging' && (
           <ParcelSizePackagingForm
+            doorBookingRoute={doorBookingRoute}
             onContinue={() => setStep('your-details')}
           />
         )}
@@ -82,51 +80,31 @@ export function BookingPage() {
         {step === 'receiver-details' && (
           <ReceiverDetailsForm
             onBack={() => setStep('your-details')}
-            onContinue={() => setStep('delivery-destination')}
-          />
-        )}
-        {step === 'delivery-destination' && (
-          <DeliveryDestinationForm
-            onBack={() => setStep('receiver-details')}
             onContinue={() => setStep('parcel-contents')}
           />
         )}
         {step === 'parcel-contents' && (
           <ParcelContentsForm
-            onBack={() => setStep('delivery-destination')}
-            onContinue={() => setStep('add-ons')}
-          />
-        )}
-        {step === 'add-ons' && (
-          <AddOnsForm
-            onBack={() => setStep('parcel-contents')}
+            onBack={() => setStep('receiver-details')}
             onContinue={() => setStep('confirm-accept')}
           />
         )}
         {step === 'confirm-accept' && (
           <ConfirmAcceptForm
-            onBack={() => setStep('add-ons')}
+            onBack={() => setStep('parcel-contents')}
             onContinueToPayment={() => setStep('payment')}
           />
         )}
         {step === 'payment' && (
-          <PaymentForm
+          <PayOnlineScreen
             onBack={() => setStep('confirm-accept')}
-            onPayNow={(method) =>
-              setStep(method === 'in-store' ? 'agent-qr' : 'pay-online')
-            }
+            onPaymentComplete={() => setStep('booking-success')}
           />
         )}
         {step === 'agent-qr' && (
           <ShowAgentQrScreen
             onBack={() => setStep('payment')}
             onAgentScanned={handleAgentScanned}
-          />
-        )}
-        {step === 'pay-online' && (
-          <PayOnlineScreen
-            onBack={() => setStep('payment')}
-            onPaymentComplete={() => setStep('booking-success')}
           />
         )}
         {step === 'booking-success' && <BookingSuccessScreen />}

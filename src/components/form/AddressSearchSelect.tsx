@@ -14,7 +14,7 @@ type AddressSearchSelectProps = {
 export function AddressSearchSelect({
   id: idProp,
   name = 'receiverAddress',
-  placeholder = 'Search for an address',
+  placeholder = 'Search address',
 }: AddressSearchSelectProps) {
   const generatedId = useId()
   const id = idProp ?? generatedId

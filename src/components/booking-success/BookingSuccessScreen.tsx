@@ -1,9 +1,10 @@
 import { ArrowRight, Check, Copy, MapPin } from 'lucide-react'
 import { useState } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { AgentBarcode } from './AgentBarcode'
 
 const TOTAL_AMOUNT = '$17.66'
-const BOOKING_REF = 'PPG-48213'
+const BOOKING_REF = 'PHAAADU17'
 const TRACKING_NUMBER = 'MP8031920017'
 
 export function BookingSuccessScreen() {
@@ -114,6 +115,20 @@ export function BookingSuccessScreen() {
             </div>
           </dl>
         </article>
+
+        <section className="w-full rounded-2xl border border-ppg-border bg-white px-4 py-5">
+          <AgentBarcode value={BOOKING_REF} />
+          <p className="mt-3 font-mono text-sm font-semibold tracking-wide text-black">
+            {BOOKING_REF}
+          </p>
+          <p className="mt-4 text-base font-bold text-black">
+            Show this to the agent
+          </p>
+          <p className="mt-1 text-sm leading-snug text-ppg-label">
+            They&apos;ll scan this barcode when you drop off your parcel at the
+            store.
+          </p>
+        </section>
       </div>
     </>
   )

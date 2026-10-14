@@ -7,6 +7,7 @@ import { TextInput } from '../form/TextInput'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { FormStepFooter } from '../ui/FormStepFooter'
+import { AddOnsSection } from '../add-ons/AddOnsSection'
 import { ParcelContentsSelect } from './ParcelContentsSelect'
 
 type ParcelContentsFormProps = {
@@ -17,6 +18,7 @@ type ParcelContentsFormProps = {
 export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormProps) {
   const photoInputId = useId()
   const [dangerousGoodsOpen, setDangerousGoodsOpen] = useState(false)
+  const [parcelValue, setParcelValue] = useState('50')
 
   return (
     <>
@@ -25,24 +27,23 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
 
       <form
         noValidate
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault()
           onContinue()
         }}
       >
-        <div className="flex items-center justify-between gap-3">
-          <StepHeading
-            step={5}
-            title="Parcel Contents"
-            titleClassName="whitespace-nowrap"
-          />
+        <div className="flex items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <StepHeading step={4} title="Contents & Add-ons" />
+          </div>
           <button
             type="button"
-            className="shrink-0 text-xs font-medium text-ppg-orange underline underline-offset-2"
+            className="ml-auto flex shrink-0 flex-col items-end text-right text-xs font-medium leading-snug text-ppg-orange underline underline-offset-2"
             onClick={() => setDangerousGoodsOpen(true)}
           >
-            Dangerous goods?
+            <span className="block text-right">Prohibited or</span>
+            <span className="block text-right">dangerous goods?</span>
           </button>
         </div>
 
@@ -69,7 +70,8 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
             type="number"
             min={0}
             step="0.01"
-            defaultValue={50}
+            value={parcelValue}
+            onChange={(event) => setParcelValue(event.target.value)}
             className="font-semibold"
           />
         </FormField>
@@ -101,6 +103,8 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
             autoComplete="off"
           />
         </FormField>
+
+        <AddOnsSection declaredParcelValue={Number(parcelValue)} />
 
         <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />

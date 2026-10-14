@@ -1,4 +1,4 @@
-import { Check, Timer } from 'lucide-react'
+import { Check } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { PrivacyPolicyModal } from '../legal/PrivacyPolicyModal'
 import { TermsAndConditionsModal } from '../legal/TermsAndConditionsModal'
@@ -64,6 +64,7 @@ export function ConfirmAcceptForm({
 }: ConfirmAcceptFormProps) {
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [noDangerousGoods, setNoDangerousGoods] = useState(false)
+  const [marketingOptIn, setMarketingOptIn] = useState(false)
   const [termsOpen, setTermsOpen] = useState(false)
   const [privacyOpen, setPrivacyOpen] = useState(false)
 
@@ -73,7 +74,7 @@ export function ConfirmAcceptForm({
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
       <div className="flex flex-col gap-4">
-        <StepHeading step={7} title="Confirm & Accept" />
+        <StepHeading step={5} title="Confirm & Accept" />
 
         <section className="rounded-2xl border border-ppg-border bg-white p-4">
           <ConfirmCheckbox
@@ -113,6 +114,17 @@ export function ConfirmAcceptForm({
               goods.
             </p>
           </ConfirmCheckbox>
+
+          <hr className="my-4 border-0 border-t border-ppg-border" />
+
+          <ConfirmCheckbox
+            checked={marketingOptIn}
+            onCheckedChange={setMarketingOptIn}
+            label="Marketing and promotional communications opt-in"
+          >
+            I would like to receive marketing and promotional communications
+            from PARCELPOINT.
+          </ConfirmCheckbox>
         </section>
 
         <TermsAndConditionsModal
@@ -130,18 +142,18 @@ export function ConfirmAcceptForm({
           name="noDangerousGoods"
           value={noDangerousGoods ? 'yes' : 'no'}
         />
+        <input
+          type="hidden"
+          name="marketingOptIn"
+          value={marketingOptIn ? 'yes' : 'no'}
+        />
 
         <section className="rounded-2xl border border-ppg-border bg-white p-4">
-          <div className="flex items-start gap-2.5">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-ppg-border bg-white">
-              <Timer className="size-4 text-ppg-label" strokeWidth={2} aria-hidden />
-            </span>
-            <div>
-              <p className="text-base font-bold text-black">Price Summary</p>
-              <p className="mt-0.5 text-sm text-ppg-label">
-                See how it all adds up — each charge is listed below.
-              </p>
-            </div>
+          <div>
+            <p className="text-base font-bold text-black">Price Summary</p>
+            <p className="mt-0.5 text-sm text-ppg-label">
+              See how it all adds up — each charge is listed below.
+            </p>
           </div>
 
           <ul className="mt-4 space-y-2.5">

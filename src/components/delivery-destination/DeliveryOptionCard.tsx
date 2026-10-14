@@ -77,7 +77,7 @@ export function DeliveryOptionCard({
             {tags.map((tag) => (
               <span
                 key={tag.label}
-                className="inline-flex items-center gap-1 rounded-full border border-[#e5e5e5] bg-[#f7f7f7] px-2 py-0.5 text-[11px] font-medium text-[#555]"
+                className="inline-flex max-w-full items-center gap-1 rounded-full border border-[#e5e5e5] bg-[#f7f7f7] px-2.5 py-1 text-[11px] font-medium leading-snug text-[#555]"
               >
                 <span aria-hidden>{tag.emoji}</span>
                 {tag.label}

@@ -1,21 +1,34 @@
 import { useState } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import type { DoorBookingRoute } from '../../booking/bookingRoute'
+import {
+  DeliveryDestinationSection,
+  type DeliveryMethod,
+} from '../delivery-destination/DeliveryDestinationSection'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { ParcelSizeCard } from './ParcelSizeCard'
 import { PARCEL_SIZE_OPTIONS } from './parcelSizeOptions'
 
 type ParcelSizePackagingFormProps = {
+  doorBookingRoute: DoorBookingRoute
   onContinue: () => void
 }
 
 export function ParcelSizePackagingForm({
+  doorBookingRoute,
   onContinue,
 }: ParcelSizePackagingFormProps) {
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
   const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod | null>(
+    null,
+  )
 
-  const canContinue = selectedSizeId !== null && needsPackaging !== null
+  const canContinue =
+    selectedSizeId !== null &&
+    needsPackaging !== null &&
+    deliveryMethod !== null
 
   return (
     <>
@@ -24,7 +37,7 @@ export function ParcelSizePackagingForm({
 
       <form
         noValidate
-        className="flex flex-col gap-5"
+        className="flex flex-col gap-6"
         onSubmit={(event) => {
           event.preventDefault()
           if (!canContinue) return
@@ -33,11 +46,16 @@ export function ParcelSizePackagingForm({
       >
         <StepHeading step={1} title="Parcel Size & Packaging" />
 
-        <section className="flex flex-col gap-3">
+        <p className="text-sm font-normal text-ppg-label">
+          Select parcel size and packaging, then enter the receiver’s address
+          and confirm door delivery.
+        </p>
+
+        <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
           <h2 className="text-sm font-normal text-ppg-label">
-            What size best fits your parcel?
+            Parcel size <span className="text-red-500">*</span>
           </h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {PARCEL_SIZE_OPTIONS.map((option) => (
               <ParcelSizeCard
                 key={option.id}
@@ -47,15 +65,24 @@ export function ParcelSizePackagingForm({
               />
             ))}
           </div>
+          <input
+            type="hidden"
+            name="parcelSize"
+            value={selectedSizeId ?? ''}
+            required
+          />
         </section>
 
         <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
           <h2 className="text-sm font-normal leading-snug text-ppg-label">
-            <span className="block">Do you need packaging?</span>
+            <span className="block">
+              Do you need packaging?{' '}
+              <span className="text-red-500">*</span>
+            </span>
             <span className="mt-1 block">
               (Adds a flat{' '}
-              <strong className="font-semibold text-black">$3.00</strong> packaging fee
-              to your total)
+              <strong className="font-semibold text-black">$2.00</strong>{' '}
+              packaging fee to your total)
             </span>
           </h2>
           <div className="grid grid-cols-2 gap-3">
@@ -82,7 +109,21 @@ export function ParcelSizePackagingForm({
               No
             </button>
           </div>
+          <input
+            type="hidden"
+            name="needsPackaging"
+            value={
+              needsPackaging === null ? '' : needsPackaging ? 'yes' : 'no'
+            }
+            required
+          />
         </section>
+
+        <DeliveryDestinationSection
+          doorBookingRoute={doorBookingRoute}
+          deliveryMethod={deliveryMethod}
+          onDeliveryMethodChange={setDeliveryMethod}
+        />
 
         <div className="flex justify-end pt-2">
           <ContinueButton

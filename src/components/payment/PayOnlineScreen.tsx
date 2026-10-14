@@ -2,7 +2,10 @@ import { CreditCard, Lock } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
-import { BackButton } from '../ui/BackButton'
+import { ContinueButton } from '../ui/ContinueButton'
+import { FormStepFooter } from '../ui/FormStepFooter'
+
+const PAY_ONLINE_FORM_ID = 'pay-online-form'
 
 const TOTAL_AMOUNT = '$17.66'
 
@@ -39,14 +42,15 @@ export function PayOnlineScreen({
       <ParcelPointLogo />
       <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
 
-      <div className="flex flex-col items-center gap-5 text-center">
-        <StepHeading step={9} title="Payment" />
-        <p className="text-sm leading-snug text-ppg-label">
+      <div className="flex flex-col gap-6">
+        <StepHeading step={6} title="Payment" />
+        <p className="text-left text-sm leading-snug text-ppg-label">
           Complete your secure card payment for {TOTAL_AMOUNT}. You&apos;re all
           set once payment is confirmed — nothing else to do in-store.
         </p>
 
         <form
+          id={PAY_ONLINE_FORM_ID}
           noValidate
           className="w-full rounded-2xl border border-ppg-border bg-white p-4 text-left shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
           onSubmit={(event) => {
@@ -128,14 +132,7 @@ export function PayOnlineScreen({
             className="mt-2 w-full rounded-lg border border-ppg-border bg-[#f7f7f7] px-3 py-3 text-base text-black outline-none placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
           />
 
-          <button
-            type="submit"
-            className="mt-5 w-full rounded-full bg-ppg-orange py-3.5 text-base font-bold text-white transition-colors hover:bg-ppg-orange-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
-          >
-            Pay
-          </button>
-
-          <p className="mx-auto mt-3 max-w-[18rem] text-center text-[10px] leading-[1.35] text-ppg-label">
+          <p className="mt-5 text-left text-[10px] leading-[1.35] text-ppg-label">
             <Lock
               className="mr-0.5 inline size-3 align-text-bottom"
               strokeWidth={2}
@@ -153,9 +150,11 @@ export function PayOnlineScreen({
           </p>
         </form>
 
-        <div className="flex w-full justify-start">
-          <BackButton onClick={onBack} />
-        </div>
+        <FormStepFooter onBack={onBack}>
+          <ContinueButton type="submit" form={PAY_ONLINE_FORM_ID}>
+            Pay
+          </ContinueButton>
+        </FormStepFooter>
       </div>
     </>
   )
