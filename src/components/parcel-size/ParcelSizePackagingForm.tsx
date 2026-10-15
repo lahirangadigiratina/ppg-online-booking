@@ -8,7 +8,11 @@ import {
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { ParcelSizeCard } from './ParcelSizeCard'
-import { PARCEL_SIZE_OPTIONS } from './parcelSizeOptions'
+import {
+  CARRY_ON_PARCEL_SIZE_ID,
+  PARCEL_SIZE_OPTIONS,
+  showPackagingForParcelSize,
+} from './parcelSizeOptions'
 
 type ParcelSizePackagingFormProps = {
   doorBookingRoute: DoorBookingRoute
@@ -25,9 +29,10 @@ export function ParcelSizePackagingForm({
     null,
   )
 
+  const showPackaging = showPackagingForParcelSize(selectedSizeId)
   const canContinue =
     selectedSizeId !== null &&
-    needsPackaging !== null &&
+    (showPackaging ? needsPackaging !== null : true) &&
     deliveryMethod !== null
 
   return (
@@ -61,7 +66,12 @@ export function ParcelSizePackagingForm({
                 key={option.id}
                 option={option}
                 selected={selectedSizeId === option.id}
-                onSelect={() => setSelectedSizeId(option.id)}
+                onSelect={() => {
+                  setSelectedSizeId(option.id)
+                  if (option.id === CARRY_ON_PARCEL_SIZE_ID) {
+                    setNeedsPackaging(null)
+                  }
+                }}
               />
             ))}
           </div>
@@ -71,52 +81,56 @@ export function ParcelSizePackagingForm({
             value={selectedSizeId ?? ''}
             required
           />
-        </section>
 
-        <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
-          <h2 className="text-sm font-normal leading-snug text-ppg-label">
-            <span className="block">
-              Do you need packaging?{' '}
-              <span className="text-red-500">*</span>
-            </span>
-            <span className="mt-1 block">
-              (Adds a flat{' '}
-              <strong className="font-semibold text-black">$2.00</strong>{' '}
-              packaging fee to your total)
-            </span>
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              onClick={() => setNeedsPackaging(true)}
-              className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                needsPackaging === true
-                  ? 'bg-black text-white'
-                  : 'border border-ppg-border bg-white text-ppg-label'
-              }`}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              onClick={() => setNeedsPackaging(false)}
-              className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
-                needsPackaging === false
-                  ? 'bg-black text-white'
-                  : 'border border-ppg-border bg-white text-ppg-label'
-              }`}
-            >
-              No
-            </button>
-          </div>
-          <input
-            type="hidden"
-            name="needsPackaging"
-            value={
-              needsPackaging === null ? '' : needsPackaging ? 'yes' : 'no'
-            }
-            required
-          />
+          {showPackaging ? (
+            <div className="flex flex-col gap-3 border-t border-ppg-border pt-4">
+              <h2 className="text-sm font-normal leading-snug text-ppg-label">
+                <span className="block">
+                  Do you need packaging?{' '}
+                  <span className="text-red-500">*</span>
+                </span>
+                <span className="mt-1 block">
+                  (Adds a flat{' '}
+                  <strong className="font-semibold text-black">$2.00</strong>{' '}
+                  packaging fee to your total)
+                </span>
+              </h2>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setNeedsPackaging(true)}
+                  className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
+                    needsPackaging === true
+                      ? 'bg-black text-white'
+                      : 'border border-ppg-border bg-white text-ppg-label'
+                  }`}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNeedsPackaging(false)}
+                  className={`rounded-xl py-3.5 text-base font-semibold transition-colors ${
+                    needsPackaging === false
+                      ? 'bg-black text-white'
+                      : 'border border-ppg-border bg-white text-ppg-label'
+                  }`}
+                >
+                  No
+                </button>
+              </div>
+              <input
+                type="hidden"
+                name="needsPackaging"
+                value={
+                  needsPackaging === null ? '' : needsPackaging ? 'yes' : 'no'
+                }
+                required
+              />
+            </div>
+          ) : selectedSizeId === CARRY_ON_PARCEL_SIZE_ID ? (
+            <input type="hidden" name="needsPackaging" value="no" />
+          ) : null}
         </section>
 
         <DeliveryDestinationSection

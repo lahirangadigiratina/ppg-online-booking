@@ -9,6 +9,14 @@ import {
 } from 'lucide-react'
 import type { ParcelSizeOption } from './ParcelSizeCard'
 
+export const CARRY_ON_PARCEL_SIZE_ID = 'carry-on'
+
+export function showPackagingForParcelSize(selectedSizeId: string | null) {
+  return (
+    selectedSizeId !== null && selectedSizeId !== CARRY_ON_PARCEL_SIZE_ID
+  )
+}
+
 export const PARCEL_SIZE_OPTIONS: ParcelSizeOption[] = [
   {
     id: 'satchel',
@@ -32,7 +40,7 @@ export const PARCEL_SIZE_OPTIONS: ParcelSizeOption[] = [
     icon: Briefcase,
   },
   {
-    id: 'carry-on',
+    id: CARRY_ON_PARCEL_SIZE_ID,
     label: 'Carry On',
     dimensions: '55×40×20cm',
     weight: 'Up to 12kg',
