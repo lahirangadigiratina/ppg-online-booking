@@ -1,16 +1,15 @@
-import { Check, Shield } from 'lucide-react'
+import { Check, ShieldCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { TermsAndConditionsModal } from '../legal/TermsAndConditionsModal'
+import {
+  PARCEL_PROTECTION_KNOW_ITEMS,
+  PARCEL_PROTECTION_MODAL_INTRO,
+  PARCEL_PROTECTION_MODAL_SUBTITLE,
+} from './parcelProtectionModalContent'
 
 const PHONE_SCREEN_ROOT_ID = 'phone-screen-root'
 const PHONE_SCREEN_SCROLL_ID = 'phone-screen-scroll'
-
-const KNOW_ITEMS = [
-  'Protection is based on your declared parcel value.',
-  'Proof of value and evidence of loss or damage are required for claims.',
-  'Parcel Protection must be added before completing your booking.',
-] as const
 
 type ParcelProtectionModalProps = {
   open: boolean
@@ -69,12 +68,15 @@ export function ParcelProtectionModal({
           role="dialog"
           aria-modal="true"
           aria-labelledby="parcel-protection-title"
-          className="max-h-[min(90%,640px)] w-full max-w-[390px] overflow-y-auto rounded-3xl bg-white px-6 pb-6 pt-7 shadow-[0_24px_48px_rgba(0,0,0,0.2)]"
+          aria-describedby="parcel-protection-description"
+          data-testid="parcel-protection-modal"
+          className="flex max-h-[min(90%,640px)] w-full max-w-[390px] flex-col overflow-hidden rounded-3xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.2)]"
           onMouseDown={(event) => event.stopPropagation()}
         >
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6 pt-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-start gap-3">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#fff0e6]">
-              <Shield
+              <ShieldCheck
                 className="size-6 text-ppg-orange"
                 strokeWidth={1.75}
                 aria-hidden
@@ -87,15 +89,17 @@ export function ParcelProtectionModal({
               >
                 Parcel Protection
               </h2>
-              <p className="mt-1 text-sm leading-snug text-ppg-label">
-                Protect your parcel against loss or damage during delivery.
+              <p
+                id="parcel-protection-description"
+                className="mt-1 text-sm leading-snug text-ppg-label"
+              >
+                {PARCEL_PROTECTION_MODAL_SUBTITLE}
               </p>
             </div>
           </div>
 
           <p className="mt-5 text-sm leading-relaxed text-ppg-label">
-            Parcel Protection provides cover based on the declared value of your
-            goods.
+            {PARCEL_PROTECTION_MODAL_INTRO}
           </p>
 
           <section className="mt-5 rounded-2xl bg-[#f5f5f5] px-4 py-4">
@@ -103,8 +107,11 @@ export function ParcelProtectionModal({
               What you need to know
             </h3>
             <ul className="mt-3 space-y-3">
-              {KNOW_ITEMS.map((item) => (
-                <li key={item} className="flex gap-2.5 text-sm leading-snug text-black">
+              {PARCEL_PROTECTION_KNOW_ITEMS.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-2.5 text-sm leading-snug text-black"
+                >
                   <Check
                     className="mt-0.5 size-4 shrink-0 text-ppg-orange"
                     strokeWidth={2.5}
@@ -138,6 +145,7 @@ export function ParcelProtectionModal({
           >
             Got it
           </button>
+          </div>
         </div>
       </div>
 

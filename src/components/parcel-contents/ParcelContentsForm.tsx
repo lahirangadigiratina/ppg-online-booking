@@ -11,14 +11,20 @@ import { AddOnsSection } from '../add-ons/AddOnsSection'
 import { ParcelContentsSelect } from './ParcelContentsSelect'
 
 type ParcelContentsFormProps = {
+  parcelValue: string
+  onParcelValueChange: (value: string) => void
   onBack: () => void
   onContinue: () => void
 }
 
-export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormProps) {
+export function ParcelContentsForm({
+  parcelValue,
+  onParcelValueChange,
+  onBack,
+  onContinue,
+}: ParcelContentsFormProps) {
   const photoInputId = useId()
   const [dangerousGoodsOpen, setDangerousGoodsOpen] = useState(false)
-  const [parcelValue, setParcelValue] = useState('50')
 
   return (
     <>
@@ -71,7 +77,7 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
             min={0}
             step="0.01"
             value={parcelValue}
-            onChange={(event) => setParcelValue(event.target.value)}
+            onChange={(event) => onParcelValueChange(event.target.value)}
             className="font-semibold"
           />
         </FormField>
@@ -104,7 +110,7 @@ export function ParcelContentsForm({ onBack, onContinue }: ParcelContentsFormPro
           />
         </FormField>
 
-        <AddOnsSection declaredParcelValue={Number(parcelValue)} />
+        <AddOnsSection parcelValueInput={parcelValue} />
 
         <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />

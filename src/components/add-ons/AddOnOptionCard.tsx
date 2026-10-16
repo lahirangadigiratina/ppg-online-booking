@@ -75,7 +75,9 @@ export function AddOnOptionCard({
           <span className="text-base font-bold leading-snug text-black">
             {title}
           </span>
-          <span className="shrink-0 text-base font-bold text-black">{price}</span>
+          <span className="shrink-0 text-base font-bold text-ppg-orange">
+            {price}
+          </span>
         </span>
         <span className="mt-1 block text-sm leading-snug text-ppg-label">
           {description}

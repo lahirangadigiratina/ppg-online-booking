@@ -49,8 +49,7 @@ type ConfirmAcceptFormProps = {
 }
 
 const PRICE_LINES = [
-  { label: 'Delivery', amount: '$10.85' },
-  { label: 'Fuel Surcharge', amount: '$1.50' },
+  { label: 'Delivery', amount: '$12.35' },
   { label: 'Packaging Fee', amount: '$3.00' },
   { label: 'Signature on Delivery', amount: '$2.20' },
   { label: 'GST (10%)', amount: '$1.76' },
@@ -149,12 +148,7 @@ export function ConfirmAcceptForm({
         />
 
         <section className="rounded-2xl border border-ppg-border bg-white p-4">
-          <div>
-            <p className="text-base font-bold text-black">Price Summary</p>
-            <p className="mt-0.5 text-sm text-ppg-label">
-              See how it all adds up — each charge is listed below.
-            </p>
-          </div>
+          <p className="text-base font-bold text-black">Price Summary</p>
 
           <ul className="mt-4 space-y-2.5">
             {PRICE_LINES.map((line) => (

@@ -39,7 +39,8 @@ export function BookingSuccessScreen() {
         <div>
           <h1 className="text-2xl font-bold text-black">All Booked!</h1>
           <p className="mt-2 text-sm leading-snug text-ppg-label">
-            You&apos;re all set! We&apos;ve emailed your shipment details.
+            You&apos;re all set! We&apos;ve emailed your shipment details and
+            digital receipt.
           </p>
           <p className="mt-3 text-base font-bold text-black">
             1 shipment confirmed · {TOTAL_AMOUNT}

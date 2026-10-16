@@ -2,11 +2,16 @@ import { PenLine, Shield } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { AddOnOptionCard } from './AddOnOptionCard'
 import { ParcelProtectionModal } from './ParcelProtectionModal'
-
-const INCLUDED_PROTECTION_MAX_VALUE = 100
+import {
+  formatParcelProtectionAddonPrice,
+  isParcelProtectionFullyIncluded,
+  parseDeclaredParcelValue,
+  parcelProtectionAdditionalBlocks,
+  parcelProtectionAddonFee,
+} from './parcelProtectionPricing'
 
 type AddOnsSectionProps = {
-  declaredParcelValue: number
+  parcelValueInput: string
 }
 
 function formatParcelValue(value: number) {
@@ -16,22 +21,28 @@ function formatParcelValue(value: number) {
   return value.toFixed(2).replace(/\.?0+$/, '')
 }
 
-export function AddOnsSection({ declaredParcelValue }: AddOnsSectionProps) {
+export function AddOnsSection({ parcelValueInput }: AddOnsSectionProps) {
   const [signatureOnDelivery, setSignatureOnDelivery] = useState(false)
   const [parcelProtection, setParcelProtection] = useState(false)
   const [protectionInfoOpen, setProtectionInfoOpen] = useState(false)
 
-  const isProtectionIncluded =
-    Number.isFinite(declaredParcelValue) &&
-    declaredParcelValue >= 0 &&
-    declaredParcelValue <= INCLUDED_PROTECTION_MAX_VALUE
+  const safeDeclaredValue = parseDeclaredParcelValue(parcelValueInput)
+  const isProtectionIncluded = isParcelProtectionFullyIncluded(safeDeclaredValue)
+  const protectionAddonFee = parcelProtectionAddonFee(safeDeclaredValue)
+  const additionalBlocks = parcelProtectionAdditionalBlocks(safeDeclaredValue)
 
-  const safeDeclaredValue = Number.isFinite(declaredParcelValue)
-    ? Math.max(0, declaredParcelValue)
-    : 0
-  const protectionDescription = `Cover your parcel valued at $${formatParcelValue(
-    safeDeclaredValue,
-  )}`
+  const protectionPriceLabel = isProtectionIncluded
+    ? 'Included'
+    : formatParcelProtectionAddonPrice(protectionAddonFee)
+
+  const protectionDescription = isProtectionIncluded
+    ? `Cover your parcel valued at $${formatParcelValue(safeDeclaredValue)}`
+    : `First $100 included. Cover up to $${formatParcelValue(
+        safeDeclaredValue,
+      )} for ${formatParcelProtectionAddonPrice(protectionAddonFee).replace(
+        '+',
+        '',
+      )} (${additionalBlocks} × $2.50 per additional $100).`
 
   useEffect(() => {
     if (isProtectionIncluded) {
@@ -39,7 +50,8 @@ export function AddOnsSection({ declaredParcelValue }: AddOnsSectionProps) {
     }
   }, [isProtectionIncluded])
 
-  const parcelProtectionActive = isProtectionIncluded || parcelProtection
+  const parcelProtectionActive =
+    isProtectionIncluded || (parcelProtection && protectionAddonFee > 0)
 
   return (
     <>
@@ -61,12 +73,13 @@ export function AddOnsSection({ declaredParcelValue }: AddOnsSectionProps) {
         />
 
         <AddOnOptionCard
+          key={`parcel-protection-${safeDeclaredValue}-${protectionPriceLabel}`}
           title="Parcel Protection"
           description={protectionDescription}
-          price={isProtectionIncluded ? 'Included' : '+$2.50'}
+          price={protectionPriceLabel}
           icon={Shield}
           included={isProtectionIncluded}
-          selectable={!isProtectionIncluded}
+          selectable={!isProtectionIncluded && protectionAddonFee > 0}
           selected={parcelProtection}
           onToggle={() => setParcelProtection((previous) => !previous)}
           linkLabel="Parcel Protection Conditions"
@@ -93,6 +106,15 @@ export function AddOnsSection({ declaredParcelValue }: AddOnsSectionProps) {
         type="hidden"
         name="parcelProtectionIncluded"
         value={isProtectionIncluded ? 'yes' : 'no'}
+      />
+      <input
+        type="hidden"
+        name="parcelProtectionFee"
+        value={
+          parcelProtectionActive && !isProtectionIncluded
+            ? protectionAddonFee.toFixed(2)
+            : ''
+        }
       />
     </>
   )

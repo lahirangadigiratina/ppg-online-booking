@@ -25,7 +25,7 @@ export function AddOnsForm({ onBack, onContinue }: AddOnsFormProps) {
       >
         <StepHeading step={5} title="Add-ons" />
 
-        <AddOnsSection declaredParcelValue={50} />
+        <AddOnsSection parcelValueInput="50" />
 
         <FormStepFooter onBack={onBack}>
           <ContinueButton type="submit" />
