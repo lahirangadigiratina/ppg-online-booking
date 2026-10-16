@@ -53,8 +53,9 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
     step === 'booking-success'
 
   return (
-    <div className="flex h-[100dvh] min-h-0 w-full flex-col items-center overflow-hidden sm:h-auto sm:min-h-svh sm:justify-center sm:overflow-visible sm:bg-[#f3f3f3] sm:px-4 sm:py-8">
-      <PhoneFrame
+    <div className="flex h-[100dvh] min-h-0 w-full flex-col items-center overflow-hidden bg-[#f3f3f3] px-4 py-4 sm:py-6">
+      <div className="flex min-h-0 w-full max-w-[430px] flex-1 flex-col">
+        <PhoneFrame
         contentKey={step}
         screenHeight={
           lockPhoneHeight
@@ -111,7 +112,8 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
           />
         )}
         {step === 'booking-success' && <BookingSuccessScreen />}
-      </PhoneFrame>
+        </PhoneFrame>
+      </div>
     </div>
   )
 }

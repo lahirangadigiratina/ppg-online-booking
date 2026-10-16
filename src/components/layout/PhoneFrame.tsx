@@ -36,13 +36,8 @@ export function PhoneFrame({
     scrollRef.current?.scrollTo({ top: 0, left: 0 })
   }, [contentKey])
 
-  const isLocked = screenHeight !== undefined
-  const lockedHeight = isLocked
-    ? Math.max(screenHeight, PHONE_SCREEN_MIN_HEIGHT_PX)
-    : undefined
-
   return (
-    <div className="mx-auto flex h-[100dvh] max-h-[100dvh] w-full max-w-[430px] flex-col overflow-hidden bg-white sm:h-auto sm:max-h-none sm:min-h-0 sm:rounded-2xl sm:border sm:border-[#dcdcdc] sm:shadow-[0_12px_48px_rgba(0,0,0,0.1)]">
+    <div className="mx-auto flex h-full max-h-full min-h-0 w-full max-w-[430px] flex-col overflow-hidden rounded-2xl border border-[#dcdcdc] bg-white shadow-[0_12px_48px_rgba(0,0,0,0.1)]">
       <div className="shrink-0 bg-white" aria-hidden>
         <div className="flex items-center justify-between px-6 pb-1 pt-2.5 text-[13px] font-semibold tracking-tight text-black">
           <span>9:41</span>
@@ -67,22 +62,12 @@ export function PhoneFrame({
       <div
         ref={shellRef}
         id="phone-screen-root"
-        className="relative min-h-0 flex-1 overflow-hidden bg-white sm:flex-none"
-        style={lockedHeight !== undefined ? { height: lockedHeight } : undefined}
+        className="relative min-h-0 flex-1 overflow-hidden bg-white"
       >
         <div
           id="phone-screen-scroll"
           ref={scrollRef}
-          className={
-            isLocked
-              ? 'box-border h-full min-h-0 overflow-x-hidden overflow-y-auto px-6 pb-8 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
-              : 'h-full min-h-0 overflow-x-hidden overflow-y-auto px-6 pb-8 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
-          }
-          style={
-            isLocked
-              ? undefined
-              : { minHeight: PHONE_SCREEN_MIN_HEIGHT_PX }
-          }
+          className="phone-screen-scroll box-border h-full min-h-0 overflow-x-hidden overflow-y-scroll overscroll-contain px-5 pb-8 pt-4 pr-3"
         >
           {children}
         </div>
