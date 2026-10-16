@@ -8,7 +8,6 @@ import {
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { ParcelSizeCard } from './ParcelSizeCard'
-import { ParcelSizeCarousel } from './ParcelSizeCarousel'
 import {
   CARRY_ON_PARCEL_SIZE_ID,
   PARCEL_SIZE_OPTIONS,
@@ -61,7 +60,10 @@ export function ParcelSizePackagingForm({
           <h2 className="text-sm font-normal text-ppg-label">
             Parcel size <span className="text-red-500">*</span>
           </h2>
-          <ParcelSizeCarousel>
+          <div
+            data-testid="parcel-size-grid"
+            className="grid grid-cols-2 gap-3"
+          >
             {PARCEL_SIZE_OPTIONS.map((option) => (
               <ParcelSizeCard
                 key={option.id}
@@ -75,7 +77,7 @@ export function ParcelSizePackagingForm({
                 }}
               />
             ))}
-          </ParcelSizeCarousel>
+          </div>
           <input
             type="hidden"
             name="parcelSize"

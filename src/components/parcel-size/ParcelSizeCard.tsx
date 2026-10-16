@@ -44,7 +44,7 @@ export function ParcelSizeCard({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className={`relative flex w-[108px] shrink-0 snap-start flex-col items-center rounded-[1.25rem] px-2 pb-3.5 pt-3.5 text-center transition-colors ${
+      className={`relative flex w-full min-w-0 flex-col items-center rounded-[1.25rem] px-2 pb-3.5 pt-3.5 text-center transition-colors ${
         selected
           ? 'border-2 border-ppg-orange bg-[#fff5f2]'
           : 'border border-[#ececec] bg-white hover:border-[#d8d8d8]'
