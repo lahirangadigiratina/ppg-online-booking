@@ -251,7 +251,7 @@ export function CollectParcelPointModal({
             </p>
           </div>
 
-          <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-4 pb-4 [scrollbar-width:thin]">
+          <div className="ppg-scroll min-h-0 flex-1 space-y-2 overflow-y-auto px-4 pb-4 pr-2">
             {filteredStores.length > 0 ? (
               filteredStores.map((store) => (
                 <CollectStoreCard

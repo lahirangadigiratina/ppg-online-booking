@@ -39,28 +39,27 @@ export function ParcelContentsForm({
           onContinue()
         }}
       >
-        <div className="flex items-start gap-3">
-          <div className="min-w-0 flex-1">
+        <section className="flex flex-col gap-3">
+          <div className="space-y-0.5">
             <StepHeading step={4} title="Contents & Add-ons" />
+            <button
+              type="button"
+              className="text-left text-xs font-medium leading-snug text-ppg-orange underline underline-offset-2"
+              onClick={() => setDangerousGoodsOpen(true)}
+            >
+              Prohibited or dangerous goods?
+            </button>
           </div>
-          <button
-            type="button"
-            className="ml-auto flex shrink-0 flex-col items-end text-right text-xs font-medium leading-snug text-ppg-orange underline underline-offset-2"
-            onClick={() => setDangerousGoodsOpen(true)}
-          >
-            <span className="block text-right">Prohibited or</span>
-            <span className="block text-right">dangerous goods?</span>
-          </button>
-        </div>
+
+          <FormField label="What's inside your parcel?" htmlFor="parcelContents">
+            <ParcelContentsSelect id="parcelContents" name="parcelContents" />
+          </FormField>
+        </section>
 
         <DangerousGoodsModal
           open={dangerousGoodsOpen}
           onClose={() => setDangerousGoodsOpen(false)}
         />
-
-        <FormField label="What's inside your parcel?" htmlFor="parcelContents">
-          <ParcelContentsSelect id="parcelContents" name="parcelContents" />
-        </FormField>
 
         <FormField
           label={

@@ -73,7 +73,7 @@ export function ParcelProtectionModal({
           className="flex max-h-[min(90%,640px)] w-full max-w-[390px] flex-col overflow-hidden rounded-3xl bg-white shadow-[0_24px_48px_rgba(0,0,0,0.2)]"
           onMouseDown={(event) => event.stopPropagation()}
         >
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-6 pt-7 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="ppg-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-4 pt-7 pr-3">
           <div className="flex items-start gap-3">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#fff0e6]">
               <ShieldCheck
@@ -137,14 +137,16 @@ export function ParcelProtectionModal({
             </button>
             .
           </p>
+          </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="mt-6 w-full rounded-full bg-ppg-orange py-3.5 text-base font-bold text-white transition-colors hover:bg-ppg-orange-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
-          >
-            Got it
-          </button>
+          <div className="shrink-0 border-t border-ppg-border bg-white px-6 py-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full rounded-full bg-ppg-orange py-3.5 text-base font-bold text-white transition-colors hover:bg-ppg-orange-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
+            >
+              Got it
+            </button>
           </div>
         </div>
       </div>

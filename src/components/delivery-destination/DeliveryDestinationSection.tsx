@@ -40,7 +40,7 @@ export function DeliveryDestinationSection({
 
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-normal text-ppg-label">
-          How would you like it received?
+          How would you like it to be received?
         </h2>
 
         <div className="flex flex-col gap-3">

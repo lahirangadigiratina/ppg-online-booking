@@ -40,33 +40,60 @@
 
 }
 
+/* Slim scrollbars for phone screen + modals (no Windows arrow buttons) */
+.ppg-scroll,
 .phone-screen-scroll,
 #phone-screen-scroll {
   scrollbar-gutter: stable;
-  scrollbar-width: auto;
-  scrollbar-color: #7a7a7a #e8e8e8;
+  scrollbar-width: thin;
+  scrollbar-color: #a3a3a3 transparent;
 }
 
+.ppg-scroll::-webkit-scrollbar,
 .phone-screen-scroll::-webkit-scrollbar,
 #phone-screen-scroll::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
+  height: 6px;
 }
 
+.ppg-scroll::-webkit-scrollbar-button,
+.phone-screen-scroll::-webkit-scrollbar-button,
+#phone-screen-scroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.ppg-scroll::-webkit-scrollbar-corner,
+.phone-screen-scroll::-webkit-scrollbar-corner,
+#phone-screen-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.ppg-scroll::-webkit-scrollbar-track,
 .phone-screen-scroll::-webkit-scrollbar-track,
 #phone-screen-scroll::-webkit-scrollbar-track {
-  background: #e8e8e8;
-  border-radius: 9999px;
+  background: transparent;
 }
 
+.ppg-scroll::-webkit-scrollbar-thumb,
 .phone-screen-scroll::-webkit-scrollbar-thumb,
 #phone-screen-scroll::-webkit-scrollbar-thumb {
-  background-color: #7a7a7a;
+  background-color: #b0b0b0;
   border-radius: 9999px;
-  border: 2px solid #e8e8e8;
-  min-height: 48px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  min-height: 40px;
 }
 
+.ppg-scroll::-webkit-scrollbar-thumb:hover,
 .phone-screen-scroll::-webkit-scrollbar-thumb:hover,
 #phone-screen-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #5c5c5c;
+  background-color: #8a8a8a;
+}
+
+.ppg-scroll::-webkit-scrollbar-thumb:active,
+.phone-screen-scroll::-webkit-scrollbar-thumb:active,
+#phone-screen-scroll::-webkit-scrollbar-thumb:active {
+  background-color: #707070;
 }

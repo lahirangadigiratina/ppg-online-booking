@@ -75,7 +75,7 @@ export function DangerousGoodsModal({ open, onClose }: DangerousGoodsModalProps)
           </button>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-3 [scrollbar-width:thin]">
+        <div className="ppg-scroll min-h-0 flex-1 overflow-y-auto p-3 pr-2">
           <div className="flex flex-col gap-2">
             {DANGEROUS_GOODS_ITEMS.map((item) => {
               const Icon = item.icon

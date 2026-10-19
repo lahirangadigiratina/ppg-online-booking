@@ -67,7 +67,7 @@ export function PhoneFrame({
         <div
           id="phone-screen-scroll"
           ref={scrollRef}
-          className="phone-screen-scroll box-border h-full min-h-0 overflow-x-hidden overflow-y-scroll overscroll-contain px-5 pb-8 pt-4 pr-3"
+          className="ppg-scroll phone-screen-scroll box-border h-full min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain px-5 pb-8 pt-4 pr-3"
         >
           {children}
         </div>
