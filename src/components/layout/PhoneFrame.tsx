@@ -52,7 +52,7 @@ export function PhoneFrame({
             </span>
           </div>
         </div>
-        <div className="px-3 pb-2.5 pt-0.5">
+        <div className="px-3 pb-1 pt-0.5">
           <div className="flex items-center justify-center gap-2 rounded-xl bg-[#e8e8ed] px-3 py-2.5 text-[13px] text-[#3a3a3c]">
             <Lock className="size-3.5 shrink-0 opacity-70" strokeWidth={2.5} />
             <span className="truncate font-medium">
@@ -72,8 +72,8 @@ export function PhoneFrame({
           ref={scrollRef}
           className={`box-border h-full min-h-0 overflow-x-hidden overscroll-contain px-5 pr-3 ${
             preventScroll
-              ? 'flex flex-col overflow-y-hidden pb-2 pt-2'
-              : 'ppg-scroll phone-screen-scroll overflow-y-auto pb-8 pt-4'
+              ? 'flex flex-col overflow-y-hidden pb-2 pt-0'
+              : 'ppg-scroll phone-screen-scroll overflow-y-auto pb-8 pt-0'
           }`}
         >
           {children}

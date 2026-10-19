@@ -5,7 +5,10 @@ import {
   type DeliveryMethod,
 } from '../delivery-destination/DeliveryDestinationSection'
 import { BookingStepShell } from '../layout/BookingStepShell'
-import { BOOKING_SECTION_LABEL_CLASS } from '../layout/bookingStepStyles'
+import {
+  BOOKING_HELP_TEXT_CLASS,
+  BOOKING_SECTION_LABEL_CLASS,
+} from '../layout/bookingStepStyles'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { ParcelSizeCard } from './ParcelSizeCard'
@@ -59,7 +62,7 @@ export function ParcelSizePackagingForm({
     >
       <StepHeading compact step={1} title="Parcel Size & Packaging" />
 
-      <p className={BOOKING_SECTION_LABEL_CLASS}>
+      <p className={BOOKING_HELP_TEXT_CLASS}>
         Select parcel size and packaging, then enter the receiver’s address and
         select the receiving method.
       </p>
@@ -97,17 +100,17 @@ export function ParcelSizePackagingForm({
 
         {showPackaging ? (
           <div className="flex flex-col gap-2 border-t border-ppg-border pt-2">
-            <p className="text-[11px] leading-snug text-ppg-label">
+            <h2 className={BOOKING_SECTION_LABEL_CLASS}>
               Do you need packaging? <span className="text-red-500">*</span>{' '}
-              <span className="text-[#999]">(+$2.00)</span>
-            </p>
+              <span className="font-normal text-ppg-label">(+$2.00)</span>
+            </h2>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => setNeedsPackaging(true)}
                 className={`rounded-lg py-2 text-sm font-semibold transition-colors ${
                   needsPackaging === true
-                    ? 'bg-black text-white'
+                    ? 'border-2 border-ppg-orange bg-[#fff5f2] text-black'
                     : 'border border-ppg-border bg-white text-ppg-label'
                 }`}
               >
@@ -118,7 +121,7 @@ export function ParcelSizePackagingForm({
                 onClick={() => setNeedsPackaging(false)}
                 className={`rounded-lg py-2 text-sm font-semibold transition-colors ${
                   needsPackaging === false
-                    ? 'bg-black text-white'
+                    ? 'border-2 border-ppg-orange bg-[#fff5f2] text-black'
                     : 'border border-ppg-border bg-white text-ppg-label'
                 }`}
               >

@@ -15,7 +15,7 @@ export function FormField({
 }: FormFieldProps) {
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
-      <label htmlFor={htmlFor} className="text-xs font-normal text-ppg-label">
+      <label htmlFor={htmlFor} className="text-xs font-bold text-black">
         {label}
       </label>
       {children}

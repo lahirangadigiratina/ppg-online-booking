@@ -36,7 +36,7 @@ export function AgentBarcode({ value, className = '' }: AgentBarcodeProps) {
       viewBox={`0 0 ${svgWidth} ${barHeight}`}
       role="img"
       aria-label={`Barcode for ${value}`}
-      className={`mx-auto block h-14 w-full max-w-[280px] ${className}`}
+      className={`mx-auto block h-20 w-auto max-w-full ${className}`}
       preserveAspectRatio="xMidYMid meet"
     >
       {bars.map((bar, index) =>

@@ -149,14 +149,14 @@ export function ConfirmAcceptForm({
         value={marketingOptIn ? 'yes' : 'no'}
       />
 
-      <section className="rounded-xl border border-ppg-border bg-white p-3">
-        <p className="text-sm font-bold text-black">Price Summary</p>
+      <section className="rounded-2xl border border-ppg-border bg-white p-4">
+        <p className="text-base font-bold text-black">Price Summary</p>
 
-        <ul className="mt-2 space-y-1.5">
+        <ul className="mt-3 space-y-2.5">
           {PRICE_LINES.map((line) => (
             <li
               key={line.label}
-              className="flex items-center justify-between gap-3 text-xs text-black"
+              className="flex items-center justify-between gap-3 text-sm text-black"
             >
               <span>{line.label}</span>
               <span className="font-semibold">{line.amount}</span>
@@ -164,11 +164,11 @@ export function ConfirmAcceptForm({
           ))}
         </ul>
 
-        <hr className="my-2.5 border-0 border-t border-ppg-border" />
+        <hr className="my-4 border-0 border-t border-ppg-border" />
 
         <div className="flex items-center justify-between gap-3">
-          <span className="text-base font-bold text-black">Total</span>
-          <span className="text-base font-bold text-black">{CONFIRM_TOTAL}</span>
+          <span className="text-lg font-bold text-black">Total</span>
+          <span className="text-lg font-bold text-black">{CONFIRM_TOTAL}</span>
         </div>
       </section>
     </BookingStepShell>

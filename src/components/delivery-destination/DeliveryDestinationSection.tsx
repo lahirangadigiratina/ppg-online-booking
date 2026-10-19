@@ -34,13 +34,21 @@ export function DeliveryDestinationSection({
 
   return (
     <>
-      <FormField label="Receiver Address" htmlFor="receiverAddress">
+      <FormField
+        label={
+          <>
+            Receiver Address <span className="text-red-500">*</span>
+          </>
+        }
+        htmlFor="receiverAddress"
+      >
         <AddressSearchSelect id="receiverAddress" name="receiverAddress" />
       </FormField>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-xs font-normal text-ppg-label">
-          How would you like it to be received?
+        <h2 className="text-xs font-bold text-black">
+          How would you like it to be received?{' '}
+          <span className="text-red-500">*</span>
         </h2>
 
         <div className="flex flex-col gap-2">

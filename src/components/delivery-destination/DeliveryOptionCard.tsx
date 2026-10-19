@@ -86,7 +86,7 @@ export function DeliveryOptionCard({
           </div>
 
           {showFooter ? (
-            <div className="mt-3 flex items-end justify-between gap-3 border-t border-[#efefef] pt-3">
+            <div className="mt-2 flex items-end justify-between gap-3">
               {footerAddress ? (
                 <p className="min-w-0 text-xs leading-snug text-ppg-label">
                   {footerAddress}

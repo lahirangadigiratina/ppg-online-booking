@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Copy, MapPin } from 'lucide-react'
+import { Check, Copy } from 'lucide-react'
 import { useState } from 'react'
 import { BookingStepShell } from '../layout/BookingStepShell'
 import { AgentBarcode } from './AgentBarcode'
@@ -6,6 +6,8 @@ import { AgentBarcode } from './AgentBarcode'
 const TOTAL_AMOUNT = '$17.66'
 const BOOKING_REF = 'PHAAADU17'
 const TRACKING_NUMBER = 'MP8031920017'
+const SHIPMENT_ORIGIN = 'Bondi Beach'
+const SHIPMENT_DESTINATION = '25 Spring St'
 
 export function BookingSuccessScreen() {
   const [trackingCopied, setTrackingCopied] = useState(false)
@@ -52,24 +54,12 @@ export function BookingSuccessScreen() {
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 space-y-1.5 text-sm">
-                  <p className="flex items-center gap-1.5 font-semibold text-black">
-                    <MapPin
-                      className="size-4 shrink-0 text-ppg-orange"
-                      strokeWidth={2}
-                      aria-hidden
-                    />
-                    <span className="truncate">Kavanaghs Pharmacy</span>
-                  </p>
-                  <p className="flex items-center gap-1.5 pl-0.5 text-ppg-label">
-                    <ArrowRight className="size-3.5 shrink-0" aria-hidden />
-                  </p>
-                  <p className="flex items-start gap-1.5 font-semibold text-black">
-                    <MapPin
-                      className="mt-0.5 size-4 shrink-0 text-ppg-orange"
-                      strokeWidth={2}
-                      aria-hidden
-                    />
-                    <span>15/37 Nicholson St, Balmain East</span>
+                  <p className="font-bold leading-snug text-black">
+                    {SHIPMENT_ORIGIN}
+                    <span aria-hidden className="mx-1.5 font-normal">
+                      →
+                    </span>
+                    {SHIPMENT_DESTINATION}
                   </p>
                   <p className="text-xs text-ppg-label">Handbag · 1kg</p>
                 </div>
@@ -114,9 +104,9 @@ export function BookingSuccessScreen() {
           </dl>
         </article>
 
-        <section className="w-full rounded-2xl border border-ppg-border bg-white px-4 py-5">
+        <section className="flex w-full flex-col items-center rounded-2xl border border-ppg-border bg-white px-4 py-5 text-center">
           <AgentBarcode value={BOOKING_REF} />
-          <p className="mt-3 font-mono text-sm font-semibold tracking-wide text-black">
+          <p className="mt-3 w-full font-mono text-sm font-semibold tracking-wide text-black">
             {BOOKING_REF}
           </p>
           <p className="mt-4 text-base font-bold text-black">

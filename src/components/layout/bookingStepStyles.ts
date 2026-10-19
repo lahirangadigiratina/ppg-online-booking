@@ -18,4 +18,6 @@ export const BOOKING_SCROLL_BODY_CLASS =
 
 export const BOOKING_INPUT_CLASS = 'py-2.5 text-sm'
 
-export const BOOKING_SECTION_LABEL_CLASS = 'text-xs font-normal text-ppg-label'
+export const BOOKING_SECTION_LABEL_CLASS = 'text-xs font-bold text-black'
+
+export const BOOKING_HELP_TEXT_CLASS = 'text-xs font-normal text-ppg-label'
