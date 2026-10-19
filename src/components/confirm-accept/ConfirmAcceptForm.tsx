@@ -171,11 +171,7 @@ export function ConfirmAcceptForm({
         </section>
 
         <FormStepFooter onBack={onBack} className="mt-1">
-          <ContinueButton
-            type="button"
-            onClick={onContinueToPayment}
-            className="min-w-0 px-5 text-sm"
-          >
+          <ContinueButton type="button" onClick={onContinueToPayment}>
             Make Payment
           </ContinueButton>
         </FormStepFooter>

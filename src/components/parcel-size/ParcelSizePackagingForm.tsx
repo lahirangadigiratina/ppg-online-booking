@@ -56,18 +56,19 @@ export function ParcelSizePackagingForm({
           and select the receiving method.
         </p>
 
-        <section className="flex flex-col gap-3 rounded-2xl border border-ppg-border bg-white p-4">
+        <section className="flex flex-col gap-3">
           <h2 className="text-sm font-normal text-ppg-label">
             Parcel size <span className="text-red-500">*</span>
           </h2>
           <div
             data-testid="parcel-size-grid"
-            className="grid grid-cols-2 gap-3"
+            className="grid grid-cols-4 gap-2"
           >
             {PARCEL_SIZE_OPTIONS.map((option) => (
               <ParcelSizeCard
                 key={option.id}
                 option={option}
+                compact
                 selected={selectedSizeId === option.id}
                 onSelect={() => {
                   setSelectedSizeId(option.id)
@@ -75,6 +76,7 @@ export function ParcelSizePackagingForm({
                     setNeedsPackaging(null)
                   }
                 }}
+                className="min-w-0 w-full"
               />
             ))}
           </div>
@@ -148,8 +150,8 @@ export function ParcelSizePackagingForm({
             disabled={!canContinue}
             className={
               canContinue
-                ? ''
-                : 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
+                ? 'min-w-[160px]'
+                : 'min-w-[160px] cursor-not-allowed opacity-50 hover:bg-ppg-orange'
             }
           />
         </div>
