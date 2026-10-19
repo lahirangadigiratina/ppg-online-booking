@@ -30,11 +30,11 @@ export function VerifiedMobileField({ phoneNumber }: VerifiedMobileFieldProps) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <div className="flex items-center gap-1.5">
         <label
           htmlFor={editing ? inputId : undefined}
-          className="text-sm text-ppg-label"
+          className="text-xs text-ppg-label"
         >
           Mobile number
         </label>
@@ -42,7 +42,7 @@ export function VerifiedMobileField({ phoneNumber }: VerifiedMobileFieldProps) {
           <button
             type="button"
             onClick={startEditing}
-            className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-ppg-orange transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
+            className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-ppg-orange transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
           >
             <Pencil className="size-3.5" strokeWidth={2} aria-hidden />
             Edit
@@ -60,12 +60,12 @@ export function VerifiedMobileField({ phoneNumber }: VerifiedMobileFieldProps) {
             value={value}
             placeholder="+61 400 000 000"
             onChange={(event) => setValue(event.target.value)}
-            className="min-w-0 flex-1 border-0 bg-transparent px-4 py-3.5 text-base text-black outline-none placeholder:text-[#b8b8b8] focus:ring-0"
+            className="min-w-0 flex-1 border-0 bg-transparent px-4 py-2.5 text-sm text-black outline-none placeholder:text-[#b8b8b8] focus:ring-0"
           />
           <button
             type="button"
             onClick={finishEditing}
-            className="shrink-0 px-4 py-3.5 text-sm font-semibold text-ppg-orange transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
+            className="shrink-0 px-3 py-2.5 text-xs font-semibold text-ppg-orange transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
           >
             Save
           </button>
@@ -73,9 +73,9 @@ export function VerifiedMobileField({ phoneNumber }: VerifiedMobileFieldProps) {
       ) : (
         <>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <p className="text-lg font-semibold tracking-tight text-black">{value}</p>
+            <p className="text-base font-semibold tracking-tight text-black">{value}</p>
             {verified ? (
-              <span className="inline-flex items-center gap-1 text-sm font-medium text-ppg-verified">
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-ppg-verified">
                 <CircleCheck className="size-4 shrink-0" strokeWidth={2.25} aria-hidden />
                 Verified
               </span>

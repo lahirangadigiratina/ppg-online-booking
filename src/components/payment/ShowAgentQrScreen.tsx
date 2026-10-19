@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import paymentQrImage from '../../assets/payment-qr-only.png'
-import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { BookingStepShell } from '../layout/BookingStepShell'
 import { BackButton } from '../ui/BackButton'
 
 const TOTAL_AMOUNT = '$17.66'
@@ -21,14 +21,11 @@ export function ShowAgentQrScreen({
   }, [onAgentScanned])
 
   return (
-    <>
-      <ParcelPointLogo />
-      <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
-
-      <div className="flex flex-col items-center gap-5 pb-2 text-center">
+    <BookingStepShell>
+      <div className="flex flex-col items-center gap-4 pb-2 text-center">
         <div>
-          <h1 className="text-xl font-bold text-black">Show this to the agent</h1>
-          <p className="mt-2 text-sm leading-snug text-ppg-label">
+          <h1 className="text-lg font-bold text-black">Show this to the agent</h1>
+          <p className="mt-1.5 text-xs leading-snug text-ppg-label">
             They&apos;ll scan it to charge {TOTAL_AMOUNT} on the store terminal
           </p>
         </div>
@@ -45,9 +42,12 @@ export function ShowAgentQrScreen({
         </div>
 
         <div className="flex w-full justify-start">
-          <BackButton onClick={onBack} />
+          <BackButton
+            onClick={onBack}
+            className="h-12 min-h-12 min-w-0 px-6"
+          />
         </div>
       </div>
-    </>
+    </BookingStepShell>
   )
 }

@@ -3,6 +3,7 @@ type StepHeadingProps = {
   title: string
   bracket?: string
   titleClassName?: string
+  compact?: boolean
 }
 
 export function StepHeading({
@@ -10,17 +11,22 @@ export function StepHeading({
   title,
   bracket,
   titleClassName = '',
+  compact = false,
 }: StepHeadingProps) {
   return (
-    <div className="flex items-center gap-3">
+    <div className={`flex items-center ${compact ? 'gap-2' : 'gap-3'}`}>
       <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black text-base font-semibold text-white"
+        className={`flex shrink-0 items-center justify-center rounded-full bg-black font-semibold text-white ${
+          compact ? 'size-7 text-sm' : 'size-9 text-base'
+        }`}
         aria-hidden
       >
         {step}
       </span>
       <h1
-        className={`min-w-0 flex-1 text-[22px] font-bold leading-snug tracking-tight text-black ${titleClassName}`}
+        className={`min-w-0 flex-1 font-bold leading-snug tracking-tight text-black ${
+          compact ? 'text-lg' : 'text-[22px]'
+        } ${titleClassName}`}
       >
         {title}
         {bracket ? <> ({bracket})</> : null}

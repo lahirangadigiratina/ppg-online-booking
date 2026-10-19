@@ -18,7 +18,7 @@ export function FormStepFooter({
   if (onBack) {
     return (
       <div
-        className={`grid grid-cols-2 items-stretch gap-3 pt-2 ${className}`}
+        className={`grid grid-cols-2 items-stretch gap-3 ${className}`}
       >
         <BackButton
           onClick={onBack}
@@ -32,6 +32,6 @@ export function FormStepFooter({
   }
 
   return (
-    <div className={`flex justify-end pt-2 ${className}`}>{children}</div>
+    <div className={`flex justify-end ${className}`}>{children}</div>
   )
 }

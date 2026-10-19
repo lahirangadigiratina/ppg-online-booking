@@ -60,7 +60,7 @@ export function ParcelContentsSelect({
         aria-expanded={open}
         aria-controls={listboxId}
         onClick={() => setOpen((previous) => !previous)}
-        className="flex w-full items-center rounded-[10px] border border-ppg-border bg-white py-3.5 pl-4 pr-10 text-left text-base font-medium text-black outline-none transition-colors focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
+        className="flex w-full items-center rounded-[10px] border border-ppg-border bg-white py-2.5 pl-4 pr-10 text-left text-sm font-medium text-black outline-none transition-colors focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
       >
         <span className="mr-3 text-xl leading-none" aria-hidden>
           {selected.emoji}

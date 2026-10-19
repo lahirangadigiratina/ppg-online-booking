@@ -66,7 +66,7 @@ export function AddressSearchSelect({
       />
 
       <Search
-        className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-ppg-label"
+        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ppg-label"
         strokeWidth={2}
         aria-hidden
       />
@@ -87,7 +87,7 @@ export function AddressSearchSelect({
           setOpen(true)
         }}
         onFocus={() => setOpen(true)}
-        className="w-full rounded-[10px] border border-ppg-border bg-white py-3.5 pl-11 pr-4 text-base text-black outline-none transition-colors placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
+        className="w-full rounded-[10px] border border-ppg-border bg-white py-2.5 pl-10 pr-3 text-sm text-black outline-none transition-colors placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
       />
 
       {open && filteredOptions.length > 0 ? (

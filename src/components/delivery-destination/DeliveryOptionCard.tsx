@@ -37,7 +37,7 @@ export function DeliveryOptionCard({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className={`relative w-full rounded-2xl border-2 p-4 text-left transition-colors ${
+      className={`relative w-full rounded-xl border-2 p-2.5 text-left transition-colors ${
         selected
           ? 'border-ppg-orange bg-[#fff5f2]'
           : 'border-[#ececec] bg-white hover:border-[#d8d8d8]'
@@ -49,8 +49,8 @@ export function DeliveryOptionCard({
         </span>
       ) : null}
 
-      <div className="flex gap-3">
-        <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#ececec] bg-white p-1.5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+      <div className="flex gap-2">
+        <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-[#ececec] bg-white p-1 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
           <img
             src={iconSrc}
             alt=""
@@ -67,10 +67,10 @@ export function DeliveryOptionCard({
             className={`flex items-start justify-between gap-2 ${selected ? 'pr-7' : ''}`}
           >
             <div className="min-w-0">
-              <p className="text-base font-bold leading-snug text-black">{title}</p>
-              <p className="mt-0.5 text-sm text-ppg-label">{subtitle}</p>
+              <p className="text-sm font-bold leading-snug text-black">{title}</p>
+              <p className="mt-0.5 text-xs text-ppg-label">{subtitle}</p>
             </div>
-            <p className="shrink-0 text-base font-bold text-black">{price}</p>
+            <p className="shrink-0 text-sm font-bold text-black">{price}</p>
           </div>
 
           <div className="mt-2.5 flex flex-wrap gap-1.5">

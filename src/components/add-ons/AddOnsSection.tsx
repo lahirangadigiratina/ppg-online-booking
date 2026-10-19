@@ -56,13 +56,13 @@ export function AddOnsSection({ parcelValueInput }: AddOnsSectionProps) {
   return (
     <>
       <div className="flex flex-wrap items-center gap-2">
-        <h2 className="text-base font-bold text-black">Add-ons</h2>
+        <h2 className="text-sm font-bold text-black">Add-ons</h2>
         <span className="rounded-full bg-[#f0f0f0] px-2.5 py-0.5 text-xs font-medium text-ppg-label">
           Optional
         </span>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <AddOnOptionCard
           title="Signature on Delivery"
           description="Recipient must sign upon delivery"

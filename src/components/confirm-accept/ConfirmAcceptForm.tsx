@@ -2,7 +2,7 @@ import { Check } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { PrivacyPolicyModal } from '../legal/PrivacyPolicyModal'
 import { TermsAndConditionsModal } from '../legal/TermsAndConditionsModal'
-import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { BookingStepShell } from '../layout/BookingStepShell'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { FormStepFooter } from '../ui/FormStepFooter'
@@ -21,24 +21,26 @@ function ConfirmCheckbox({
   children,
 }: ConfirmCheckboxProps) {
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex items-start gap-2.5">
       <button
         type="button"
         role="checkbox"
         aria-checked={checked}
         aria-label={label}
         onClick={() => onCheckedChange(!checked)}
-        className={`mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${
+        className={`mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full transition-colors ${
           checked
             ? 'bg-ppg-orange text-white'
             : 'border-2 border-[#d8d8d8] bg-white'
         }`}
       >
         {checked ? (
-          <Check className="size-3.5" strokeWidth={3} aria-hidden />
+          <Check className="size-3" strokeWidth={3} aria-hidden />
         ) : null}
       </button>
-      <div className="min-w-0 flex-1 text-sm leading-snug text-black">{children}</div>
+      <div className="min-w-0 flex-1 text-xs leading-snug text-black">
+        {children}
+      </div>
     </div>
   )
 }
@@ -68,114 +70,107 @@ export function ConfirmAcceptForm({
   const [privacyOpen, setPrivacyOpen] = useState(false)
 
   return (
-    <>
-      <ParcelPointLogo />
-      <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
-
-      <div className="flex flex-col gap-4">
-        <StepHeading step={5} title="Confirm & Accept" />
-
-        <section className="rounded-2xl border border-ppg-border bg-white p-4">
-          <ConfirmCheckbox
-            checked={termsAccepted}
-            onCheckedChange={setTermsAccepted}
-            label="I agree to the Terms and Conditions and Privacy Policy"
-          >
-            I agree to the{' '}
-            <button
-              type="button"
-              className="font-medium text-ppg-orange underline underline-offset-2"
-              onClick={() => setTermsOpen(true)}
-            >
-              Terms &amp; Conditions
-            </button>{' '}
-            and{' '}
-            <button
-              type="button"
-              className="font-medium text-ppg-orange underline underline-offset-2"
-              onClick={() => setPrivacyOpen(true)}
-            >
-              Privacy Policy
-            </button>
-            .
-          </ConfirmCheckbox>
-
-          <hr className="my-4 border-0 border-t border-ppg-border" />
-
-          <ConfirmCheckbox
-            checked={noDangerousGoods}
-            onCheckedChange={setNoDangerousGoods}
-            label="No dangerous goods"
-          >
-            <p className="font-bold text-black">No dangerous goods</p>
-            <p className="mt-1 text-ppg-label">
-              I confirm this parcel does not contain prohibited or dangerous
-              goods.
-            </p>
-          </ConfirmCheckbox>
-
-          <hr className="my-4 border-0 border-t border-ppg-border" />
-
-          <ConfirmCheckbox
-            checked={marketingOptIn}
-            onCheckedChange={setMarketingOptIn}
-            label="Marketing and promotional communications opt-in"
-          >
-            I would like to receive marketing and promotional communications
-            from PARCELPOINT.
-          </ConfirmCheckbox>
-        </section>
-
-        <TermsAndConditionsModal
-          open={termsOpen}
-          onClose={() => setTermsOpen(false)}
-        />
-        <PrivacyPolicyModal
-          open={privacyOpen}
-          onClose={() => setPrivacyOpen(false)}
-        />
-
-        <input type="hidden" name="termsAccepted" value={termsAccepted ? 'yes' : 'no'} />
-        <input
-          type="hidden"
-          name="noDangerousGoods"
-          value={noDangerousGoods ? 'yes' : 'no'}
-        />
-        <input
-          type="hidden"
-          name="marketingOptIn"
-          value={marketingOptIn ? 'yes' : 'no'}
-        />
-
-        <section className="rounded-2xl border border-ppg-border bg-white p-4">
-          <p className="text-base font-bold text-black">Price Summary</p>
-
-          <ul className="mt-4 space-y-2.5">
-            {PRICE_LINES.map((line) => (
-              <li
-                key={line.label}
-                className="flex items-center justify-between gap-3 text-sm text-black"
-              >
-                <span>{line.label}</span>
-                <span className="font-semibold">{line.amount}</span>
-              </li>
-            ))}
-          </ul>
-
-          <hr className="my-4 border-0 border-t border-ppg-border" />
-
-          <div className="flex items-center justify-between gap-3">
-            <span className="text-lg font-bold text-black">Total</span>
-            <span className="text-lg font-bold text-black">{CONFIRM_TOTAL}</span>
-          </div>
-        </section>
-
-        <FormStepFooter onBack={onBack} className="mt-1">
+    <BookingStepShell
+      footer={
+        <FormStepFooter onBack={onBack}>
           <ContinueButton type="button" onClick={onContinueToPayment}>
             Make Payment
           </ContinueButton>
         </FormStepFooter>
-      </div>
-    </>
+      }
+    >
+      <StepHeading compact step={5} title="Confirm & Accept" />
+
+      <section className="rounded-xl border border-ppg-border bg-white p-3">
+        <ConfirmCheckbox
+          checked={termsAccepted}
+          onCheckedChange={setTermsAccepted}
+          label="I agree to the Terms and Conditions and Privacy Policy"
+        >
+          I agree to the{' '}
+          <button
+            type="button"
+            className="font-medium text-ppg-orange underline underline-offset-2"
+            onClick={() => setTermsOpen(true)}
+          >
+            Terms &amp; Conditions
+          </button>{' '}
+          and{' '}
+          <button
+            type="button"
+            className="font-medium text-ppg-orange underline underline-offset-2"
+            onClick={() => setPrivacyOpen(true)}
+          >
+            Privacy Policy
+          </button>
+          .
+        </ConfirmCheckbox>
+
+        <hr className="my-3 border-0 border-t border-ppg-border" />
+
+        <ConfirmCheckbox
+          checked={noDangerousGoods}
+          onCheckedChange={setNoDangerousGoods}
+          label="No dangerous goods"
+        >
+          <p className="font-bold text-black">No dangerous goods</p>
+          <p className="mt-0.5 text-ppg-label">
+            I confirm this parcel does not contain prohibited or dangerous goods.
+          </p>
+        </ConfirmCheckbox>
+
+        <hr className="my-3 border-0 border-t border-ppg-border" />
+
+        <ConfirmCheckbox
+          checked={marketingOptIn}
+          onCheckedChange={setMarketingOptIn}
+          label="Marketing and promotional communications opt-in"
+        >
+          I would like to receive marketing and promotional communications from
+          PARCELPOINT.
+        </ConfirmCheckbox>
+      </section>
+
+      <TermsAndConditionsModal
+        open={termsOpen}
+        onClose={() => setTermsOpen(false)}
+      />
+      <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+
+      <input type="hidden" name="termsAccepted" value={termsAccepted ? 'yes' : 'no'} />
+      <input
+        type="hidden"
+        name="noDangerousGoods"
+        value={noDangerousGoods ? 'yes' : 'no'}
+      />
+      <input
+        type="hidden"
+        name="marketingOptIn"
+        value={marketingOptIn ? 'yes' : 'no'}
+      />
+
+      <section className="rounded-xl border border-ppg-border bg-white p-3">
+        <p className="text-sm font-bold text-black">Price Summary</p>
+
+        <ul className="mt-2 space-y-1.5">
+          {PRICE_LINES.map((line) => (
+            <li
+              key={line.label}
+              className="flex items-center justify-between gap-3 text-xs text-black"
+            >
+              <span>{line.label}</span>
+              <span className="font-semibold">{line.amount}</span>
+            </li>
+          ))}
+        </ul>
+
+        <hr className="my-2.5 border-0 border-t border-ppg-border" />
+
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-base font-bold text-black">Total</span>
+          <span className="text-base font-bold text-black">{CONFIRM_TOTAL}</span>
+        </div>
+      </section>
+    </BookingStepShell>
   )
 }

@@ -12,6 +12,8 @@ type PhoneFrameProps = {
   onMeasure?: (height: number) => void
   /** Changes scroll position to top when the active step changes */
   contentKey?: string
+  /** Disable vertical scroll so step content fits the viewport */
+  preventScroll?: boolean
 }
 
 export function PhoneFrame({
@@ -19,6 +21,7 @@ export function PhoneFrame({
   screenHeight,
   onMeasure,
   contentKey,
+  preventScroll = false,
 }: PhoneFrameProps) {
   const shellRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -67,7 +70,11 @@ export function PhoneFrame({
         <div
           id="phone-screen-scroll"
           ref={scrollRef}
-          className="ppg-scroll phone-screen-scroll box-border h-full min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain px-5 pb-8 pt-4 pr-3"
+          className={`box-border h-full min-h-0 overflow-x-hidden overscroll-contain px-5 pr-3 ${
+            preventScroll
+              ? 'flex flex-col overflow-y-hidden pb-2 pt-2'
+              : 'ppg-scroll phone-screen-scroll overflow-y-auto pb-8 pt-4'
+          }`}
         >
           {children}
         </div>

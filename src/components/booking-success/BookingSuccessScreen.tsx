@@ -1,6 +1,6 @@
 import { ArrowRight, Check, Copy, MapPin } from 'lucide-react'
 import { useState } from 'react'
-import { ParcelPointLogo } from '../branding/ParcelPointLogo'
+import { BookingStepShell } from '../layout/BookingStepShell'
 import { AgentBarcode } from './AgentBarcode'
 
 const TOTAL_AMOUNT = '$17.66'
@@ -21,11 +21,8 @@ export function BookingSuccessScreen() {
   }
 
   return (
-    <>
-      <ParcelPointLogo />
-      <hr className="-mx-6 mb-6 border-0 border-t border-ppg-border" />
-
-      <div className="flex flex-col items-center gap-5 pb-2 text-center">
+    <BookingStepShell>
+      <div className="flex flex-col items-center gap-4 pb-2 text-center">
         <div className="relative flex size-20 items-center justify-center">
           <span
             className="absolute inset-0 rounded-full bg-[#e8f8ee]"
@@ -37,12 +34,12 @@ export function BookingSuccessScreen() {
         </div>
 
         <div>
-          <h1 className="text-2xl font-bold text-black">All Booked!</h1>
-          <p className="mt-2 text-sm leading-snug text-ppg-label">
+          <h1 className="text-xl font-bold text-black">All Booked!</h1>
+          <p className="mt-1.5 text-xs leading-snug text-ppg-label">
             You&apos;re all set! We&apos;ve emailed your shipment details and
             digital receipt.
           </p>
-          <p className="mt-3 text-base font-bold text-black">
+          <p className="mt-2 text-sm font-bold text-black">
             1 shipment confirmed · {TOTAL_AMOUNT}
           </p>
         </div>
@@ -131,6 +128,6 @@ export function BookingSuccessScreen() {
           </p>
         </section>
       </div>
-    </>
+    </BookingStepShell>
   )
 }

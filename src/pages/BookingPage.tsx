@@ -66,6 +66,7 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
             : undefined
         }
         onMeasure={lockPhoneHeight ? undefined : handlePhoneMeasure}
+        preventScroll
       >
         {step === 'parcel-size-packaging' && (
           <ParcelSizePackagingForm
