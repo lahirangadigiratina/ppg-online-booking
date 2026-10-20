@@ -36,7 +36,7 @@ export function AddOnsSection({ parcelValueInput }: AddOnsSectionProps) {
     : formatParcelProtectionAddonPrice(protectionAddonFee)
 
   const protectionDescription = isProtectionIncluded
-    ? '$100 cover included; Extra charge above'
+    ? `Cover your parcel valued at $${formatParcelValue(safeDeclaredValue)}`
     : `First $100 included. Cover up to $${formatParcelValue(
         safeDeclaredValue,
       )} for ${formatParcelProtectionAddonPrice(protectionAddonFee).replace(
