@@ -30,7 +30,7 @@ type BookingPageProps = {
 export function BookingPage({ doorBookingRoute }: BookingPageProps) {
   const [step, setStep] = useState<BookingStep>('parcel-size-packaging')
   const [phoneScreenHeight, setPhoneScreenHeight] = useState<number>()
-  const [parcelValue, setParcelValue] = useState('50')
+  const [parcelValue, setParcelValue] = useState('')
 
   const handlePhoneMeasure = useCallback((height: number) => {
     const nextHeight = Math.max(height, PHONE_SCREEN_MIN_HEIGHT_PX)

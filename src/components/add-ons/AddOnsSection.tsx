@@ -6,7 +6,6 @@ import {
   formatParcelProtectionAddonPrice,
   isParcelProtectionFullyIncluded,
   parseDeclaredParcelValue,
-  parcelProtectionAdditionalBlocks,
   parcelProtectionAddonFee,
 } from './parcelProtectionPricing'
 
@@ -29,20 +28,12 @@ export function AddOnsSection({ parcelValueInput }: AddOnsSectionProps) {
   const safeDeclaredValue = parseDeclaredParcelValue(parcelValueInput)
   const isProtectionIncluded = isParcelProtectionFullyIncluded(safeDeclaredValue)
   const protectionAddonFee = parcelProtectionAddonFee(safeDeclaredValue)
-  const additionalBlocks = parcelProtectionAdditionalBlocks(safeDeclaredValue)
 
   const protectionPriceLabel = isProtectionIncluded
     ? 'Included'
     : formatParcelProtectionAddonPrice(protectionAddonFee)
 
-  const protectionDescription = isProtectionIncluded
-    ? `Cover your parcel valued at $${formatParcelValue(safeDeclaredValue)}`
-    : `First $100 included. Cover up to $${formatParcelValue(
-        safeDeclaredValue,
-      )} for ${formatParcelProtectionAddonPrice(protectionAddonFee).replace(
-        '+',
-        '',
-      )} (${additionalBlocks} × $2.50 per additional $100).`
+  const protectionDescription = `Cover your parcel valued at $${formatParcelValue(safeDeclaredValue)}`
 
   useEffect(() => {
     if (isProtectionIncluded) {
