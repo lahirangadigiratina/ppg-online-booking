@@ -70,7 +70,7 @@ export function PhoneFrame({
         <div
           id="phone-screen-scroll"
           ref={scrollRef}
-          className={`box-border h-full min-h-0 overflow-x-hidden overscroll-contain px-5 pr-3 ${
+          className={`box-border h-full min-h-0 overflow-x-hidden overscroll-contain px-5 ${
             preventScroll
               ? 'flex flex-col overflow-y-hidden pb-2 pt-0'
               : 'ppg-scroll phone-screen-scroll overflow-y-auto pb-8 pt-0'
