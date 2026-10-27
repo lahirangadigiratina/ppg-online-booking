@@ -87,7 +87,7 @@ export function AddressSearchSelect({
           setOpen(true)
         }}
         onFocus={() => setOpen(true)}
-        className="w-full rounded-[10px] border border-ppg-border bg-white py-2.5 pl-10 pr-3 text-sm text-black outline-none transition-colors placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
+        className="booking-search-input"
       />
 
       {open && filteredOptions.length > 0 ? (

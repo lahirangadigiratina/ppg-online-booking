@@ -40,7 +40,7 @@ export function ParcelContentsForm({
     >
       <section className="flex flex-col gap-2">
         <div className="space-y-0.5">
-          <StepHeading compact step={4} title="Contents & Add-ons" />
+          <StepHeading compact step={5} title="Contents & Add-ons" />
           <button
             type="button"
             className="text-left text-xs font-medium leading-snug text-ppg-orange underline underline-offset-2"

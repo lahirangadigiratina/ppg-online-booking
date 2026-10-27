@@ -1,43 +1,30 @@
 import { useState } from 'react'
-import type { DoorBookingRoute } from '../../booking/bookingRoute'
-import {
-  DeliveryDestinationSection,
-  type DeliveryMethod,
-} from '../delivery-destination/DeliveryDestinationSection'
 import { BookingStepShell } from '../layout/BookingStepShell'
-import {
-  BOOKING_HELP_TEXT_CLASS,
-  BOOKING_SECTION_LABEL_CLASS,
-} from '../layout/bookingStepStyles'
+import { BOOKING_HELP_TEXT_CLASS } from '../layout/bookingStepStyles'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
-import { ParcelSizeCard } from './ParcelSizeCard'
+import { FormStepFooter } from '../ui/FormStepFooter'
 import {
-  CARRY_ON_PARCEL_SIZE_ID,
-  PARCEL_SIZE_OPTIONS,
-  showPackagingForParcelSize,
-} from './parcelSizeOptions'
+  isParcelSizePackagingComplete,
+  ParcelSizePackagingSection,
+} from './ParcelSizePackagingSection'
 
 type ParcelSizePackagingFormProps = {
-  doorBookingRoute: DoorBookingRoute
+  onBack: () => void
   onContinue: () => void
 }
 
 export function ParcelSizePackagingForm({
-  doorBookingRoute,
+  onBack,
   onContinue,
 }: ParcelSizePackagingFormProps) {
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
   const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod | null>(
-    null,
-  )
 
-  const showPackaging = showPackagingForParcelSize(selectedSizeId)
-  const canContinue =
-    selectedSizeId !== null &&
-    (showPackaging ? needsPackaging !== null : true) &&
-    deliveryMethod !== null
+  const canContinue = isParcelSizePackagingComplete(
+    selectedSizeId,
+    needsPackaging,
+  )
 
   return (
     <BookingStepShell
@@ -47,105 +34,30 @@ export function ParcelSizePackagingForm({
         onContinue()
       }}
       footer={
-        <div className="flex justify-end">
+        <FormStepFooter onBack={onBack}>
           <ContinueButton
             type="submit"
             disabled={!canContinue}
             className={
               canContinue
-                ? 'min-w-[140px]'
-                : 'min-w-[140px] cursor-not-allowed opacity-50 hover:bg-ppg-orange'
+                ? undefined
+                : 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
             }
           />
-        </div>
+        </FormStepFooter>
       }
     >
-      <StepHeading compact step={1} title="Parcel Size & Packaging" />
+      <StepHeading compact step={2} title="Parcel Size & Packaging" />
 
       <p className={BOOKING_HELP_TEXT_CLASS}>
-        Select parcel size and packaging, then enter the receiver’s address and
-        select the receiving method.
+        Select your parcel size and whether you need packaging at the store.
       </p>
 
-      <section className="flex flex-col gap-2">
-        <h2 className={BOOKING_SECTION_LABEL_CLASS}>
-          Parcel size <span className="text-red-500">*</span>
-        </h2>
-        <div
-          data-testid="parcel-size-grid"
-          className="grid grid-cols-4 gap-1.5"
-        >
-          {PARCEL_SIZE_OPTIONS.map((option) => (
-            <ParcelSizeCard
-              key={option.id}
-              option={option}
-              compact
-              selected={selectedSizeId === option.id}
-              onSelect={() => {
-                setSelectedSizeId(option.id)
-                if (option.id === CARRY_ON_PARCEL_SIZE_ID) {
-                  setNeedsPackaging(null)
-                }
-              }}
-              className="min-w-0 w-full"
-            />
-          ))}
-        </div>
-        <input
-          type="hidden"
-          name="parcelSize"
-          value={selectedSizeId ?? ''}
-          required
-        />
-
-        {showPackaging ? (
-          <div className="flex flex-col gap-2 border-t border-ppg-border pt-2">
-            <h2 className={BOOKING_SECTION_LABEL_CLASS}>
-              Do you need packaging? <span className="text-red-500">*</span>{' '}
-              <span className="font-normal text-ppg-label">(+$2.00)</span>
-            </h2>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => setNeedsPackaging(true)}
-                className={`rounded-lg py-2 text-sm font-semibold transition-colors ${
-                  needsPackaging === true
-                    ? 'border-2 border-ppg-orange bg-[#fff5f2] text-black'
-                    : 'border border-ppg-border bg-white text-ppg-label'
-                }`}
-              >
-                Yes
-              </button>
-              <button
-                type="button"
-                onClick={() => setNeedsPackaging(false)}
-                className={`rounded-lg py-2 text-sm font-semibold transition-colors ${
-                  needsPackaging === false
-                    ? 'border-2 border-ppg-orange bg-[#fff5f2] text-black'
-                    : 'border border-ppg-border bg-white text-ppg-label'
-                }`}
-              >
-                No
-              </button>
-            </div>
-            <input
-              type="hidden"
-              name="needsPackaging"
-              value={
-                needsPackaging === null ? '' : needsPackaging ? 'yes' : 'no'
-              }
-              required
-            />
-          </div>
-        ) : selectedSizeId === CARRY_ON_PARCEL_SIZE_ID ? (
-          <input type="hidden" name="needsPackaging" value="no" />
-        ) : null}
-      </section>
-
-      <DeliveryDestinationSection
-        doorBookingRoute={doorBookingRoute}
-        deliveryMethod={deliveryMethod}
-        onDeliveryMethodChange={setDeliveryMethod}
+      <ParcelSizePackagingSection
+        selectedSizeId={selectedSizeId}
+        onSelectedSizeIdChange={setSelectedSizeId}
+        needsPackaging={needsPackaging}
+        onNeedsPackagingChange={setNeedsPackaging}
       />
     </BookingStepShell>
   )

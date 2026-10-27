@@ -1,6 +1,6 @@
 /** Shared layout + control sizing (matches Receiver Details step) */
 export const BOOKING_SHELL_CLASS =
-  'flex h-full min-h-0 flex-col overflow-hidden'
+  'flex h-full min-h-0 flex-1 flex-col overflow-hidden'
 
 export const BOOKING_HR_CLASS =
   '-mx-5 mb-2 shrink-0 border-0 border-t border-ppg-border'

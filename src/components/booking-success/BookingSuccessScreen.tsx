@@ -1,26 +1,20 @@
-import { Check, Copy } from 'lucide-react'
-import { useState } from 'react'
+import { Check } from 'lucide-react'
 import { BookingStepShell } from '../layout/BookingStepShell'
 import { AgentBarcode } from './AgentBarcode'
 
 const TOTAL_AMOUNT = '$17.66'
 const BOOKING_REF = 'PHAAADU17'
-const TRACKING_NUMBER = 'MP8031920017'
 const SHIPMENT_ORIGIN = 'Bondi Beach'
 const SHIPMENT_DESTINATION = '25 Spring St'
 
-export function BookingSuccessScreen() {
-  const [trackingCopied, setTrackingCopied] = useState(false)
+export type BookingSuccessVariant = 'cash' | 'card'
 
-  async function copyTracking() {
-    try {
-      await navigator.clipboard.writeText(TRACKING_NUMBER)
-      setTrackingCopied(true)
-      window.setTimeout(() => setTrackingCopied(false), 2000)
-    } catch {
-      setTrackingCopied(false)
-    }
-  }
+type BookingSuccessScreenProps = {
+  variant: BookingSuccessVariant
+}
+
+export function BookingSuccessScreen({ variant }: BookingSuccessScreenProps) {
+  const payAtAgent = variant === 'cash'
 
   return (
     <BookingStepShell>
@@ -38,13 +32,23 @@ export function BookingSuccessScreen() {
         <div>
           <h1 className="text-xl font-bold text-black">All Booked!</h1>
           <p className="mt-1.5 text-xs leading-snug text-ppg-label">
-            You&apos;re all set! We&apos;ve emailed your shipment details and
-            digital receipt.
+            {payAtAgent
+              ? 'Your booking is confirmed. Pay at the store when you drop off your parcel.'
+              : "You're all set! We've emailed your shipment details and digital receipt."}
           </p>
           <p className="mt-2 text-sm font-bold text-black">
             1 shipment confirmed · {TOTAL_AMOUNT}
           </p>
         </div>
+
+        {payAtAgent ? (
+          <p
+            className="w-full rounded-2xl border-2 border-ppg-orange bg-[#fff5f2] px-4 py-3 text-base font-bold leading-snug text-black"
+            role="status"
+          >
+            Please pay {TOTAL_AMOUNT} to the agent.
+          </p>
+        ) : null}
 
         <article className="w-full rounded-2xl border border-ppg-border bg-white p-4 text-left">
           <div className="flex gap-3">
@@ -73,33 +77,10 @@ export function BookingSuccessScreen() {
 
           <hr className="my-4 border-0 border-t border-ppg-border" />
 
-          <dl className="space-y-2 text-sm">
+          <dl className="text-sm">
             <div className="flex items-center justify-between gap-3">
               <dt className="shrink-0 text-ppg-label">Booking Ref</dt>
-              <dd className="flex min-w-0 items-center justify-end gap-1 font-bold text-black">
-                <span className="tabular-nums">{BOOKING_REF}</span>
-                <span className="size-5 shrink-0" aria-hidden />
-              </dd>
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <dt className="shrink-0 text-ppg-label">Tracking</dt>
-              <dd className="flex min-w-0 items-center justify-end gap-1 font-bold text-black">
-                <span className="tabular-nums">{TRACKING_NUMBER}</span>
-                <button
-                  type="button"
-                  onClick={() => void copyTracking()}
-                  aria-label={
-                    trackingCopied ? 'Tracking number copied' : 'Copy tracking number'
-                  }
-                  className="flex size-5 shrink-0 items-center justify-center rounded border border-ppg-border text-ppg-label transition-colors hover:border-ppg-orange/40 hover:bg-[#fff8f3] hover:text-ppg-orange focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ppg-orange"
-                >
-                  {trackingCopied ? (
-                    <Check className="size-2.5 text-[#2e9e4f]" strokeWidth={2.75} aria-hidden />
-                  ) : (
-                    <Copy className="size-2.5" strokeWidth={2.25} aria-hidden />
-                  )}
-                </button>
-              </dd>
+              <dd className="font-bold tabular-nums text-black">{BOOKING_REF}</dd>
             </div>
           </dl>
         </article>

@@ -184,8 +184,8 @@ export function CollectParcelPointModal({
             </button>
           </div>
 
-          <div className="mt-2.5 flex gap-2">
-            <div className="relative min-w-0 flex-1">
+          <div className="mt-2.5 flex items-center gap-2">
+            <div className="relative h-[38px] min-w-0 flex-1">
               <Search
                 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ppg-label"
                 strokeWidth={2}
@@ -196,7 +196,7 @@ export function CollectParcelPointModal({
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search stores..."
-                className="w-full rounded-full border border-ppg-border bg-white py-2 pl-9 pr-3 text-sm text-black outline-none placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
+                className="box-border h-full w-full rounded-full border border-ppg-border bg-white pl-9 pr-3 text-sm leading-none text-black outline-none placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
               />
             </div>
             <CollectRadiusSelect

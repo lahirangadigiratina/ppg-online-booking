@@ -76,7 +76,9 @@ export function PhoneFrame({
               : 'ppg-scroll phone-screen-scroll overflow-y-auto pb-8 pt-0'
           }`}
         >
-          {children}
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            {children}
+          </div>
         </div>
       </div>
     </div>

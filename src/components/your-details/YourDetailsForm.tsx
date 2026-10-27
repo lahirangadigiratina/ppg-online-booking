@@ -26,7 +26,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
         </FormStepFooter>
       }
     >
-      <StepHeading compact step={2} title="Your Details" bracket="Sender" />
+      <StepHeading compact step={3} title="Your Details" bracket="Sender" />
 
       <VerifiedMobileField phoneNumber={MOCK_PHONE} />
 

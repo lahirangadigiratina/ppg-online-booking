@@ -125,7 +125,7 @@ export function ConfirmAcceptForm({
         </FormStepFooter>
       }
     >
-      <StepHeading compact step={5} title="Confirm & Accept" />
+      <StepHeading compact step={6} title="Confirm & Accept" />
 
       <section className="rounded-xl border border-ppg-border bg-white p-3">
         <ConfirmCheckbox

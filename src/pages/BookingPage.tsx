@@ -1,36 +1,58 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import type { DoorBookingRoute } from '../booking/bookingRoute'
 import { BookingSuccessScreen } from '../components/booking-success/BookingSuccessScreen'
 import { ConfirmAcceptForm } from '../components/confirm-accept/ConfirmAcceptForm'
 import {
+  DEFAULT_SENDING_PARCELPOINT_STORE_ID,
+  getCollectStoreById,
+  getSendingParcelPointStore,
+} from '../components/delivery-destination/collectStoreOptions'
+import {
   PHONE_SCREEN_MIN_HEIGHT_PX,
   PhoneFrame,
 } from '../components/layout/PhoneFrame'
-import { PayOnlineScreen } from '../components/payment/PayOnlineScreen'
-import { ShowAgentQrScreen } from '../components/payment/ShowAgentQrScreen'
+import type { DeliveryMethod } from '../components/delivery-destination/DeliveryDestinationSection'
+import { DeliveryDestinationStepForm } from '../components/delivery-destination/DeliveryDestinationStepForm'
+import { PaymentFlowScreen } from '../components/payment/PaymentFlowScreen'
 import { ParcelContentsForm } from '../components/parcel-contents/ParcelContentsForm'
-import { ParcelSizePackagingForm } from '../components/parcel-size/ParcelSizePackagingForm'
 import { ReceiverDetailsForm } from '../components/receiver-details/ReceiverDetailsForm'
+import { SendingFromParcelPointForm } from '../components/sending-from/SendingFromParcelPointForm'
 import { YourDetailsForm } from '../components/your-details/YourDetailsForm'
 
 type BookingStep =
-  | 'parcel-size-packaging'
+  | 'sending-from-parcelpoint'
+  | 'delivery-destination'
   | 'your-details'
   | 'receiver-details'
   | 'parcel-contents'
   | 'confirm-accept'
   | 'payment'
-  | 'agent-qr'
-  | 'booking-success'
+  | 'booking-success-cash'
+  | 'booking-success-card'
 
 type BookingPageProps = {
   doorBookingRoute: DoorBookingRoute
 }
 
 export function BookingPage({ doorBookingRoute }: BookingPageProps) {
-  const [step, setStep] = useState<BookingStep>('parcel-size-packaging')
+  const [step, setStep] = useState<BookingStep>('sending-from-parcelpoint')
   const [phoneScreenHeight, setPhoneScreenHeight] = useState<number>()
   const [parcelValue, setParcelValue] = useState('')
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod | null>(
+    null,
+  )
+  const initialSendingFromStore = useMemo(
+    () => getSendingParcelPointStore(),
+    [],
+  )
+  const [sendingFromStoreId, setSendingFromStoreId] = useState(
+    DEFAULT_SENDING_PARCELPOINT_STORE_ID,
+  )
+  const sendingFromStore = useMemo(
+    () =>
+      getCollectStoreById(sendingFromStoreId) ?? initialSendingFromStore,
+    [initialSendingFromStore, sendingFromStoreId],
+  )
 
   const handlePhoneMeasure = useCallback((height: number) => {
     const nextHeight = Math.max(height, PHONE_SCREEN_MIN_HEIGHT_PX)
@@ -39,18 +61,15 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
     )
   }, [])
 
-  const handleAgentScanned = useCallback(() => {
-    setStep('booking-success')
-  }, [])
-
   const lockPhoneHeight =
-    step === 'parcel-size-packaging' ||
+    step === 'sending-from-parcelpoint' ||
+    step === 'delivery-destination' ||
     step === 'receiver-details' ||
     step === 'parcel-contents' ||
     step === 'confirm-accept' ||
     step === 'payment' ||
-    step === 'agent-qr' ||
-    step === 'booking-success'
+    step === 'booking-success-cash' ||
+    step === 'booking-success-card'
 
   return (
     <div className="flex h-[100dvh] min-h-0 w-full flex-col items-center overflow-hidden bg-[#f3f3f3] px-4 py-4 sm:py-6">
@@ -68,15 +87,26 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
         onMeasure={lockPhoneHeight ? undefined : handlePhoneMeasure}
         preventScroll
       >
-        {step === 'parcel-size-packaging' && (
-          <ParcelSizePackagingForm
+        {step === 'sending-from-parcelpoint' && (
+          <SendingFromParcelPointForm
+            initialStore={initialSendingFromStore}
+            selectedStore={sendingFromStore}
+            onSelectedStoreChange={(store) => setSendingFromStoreId(store.id)}
+            onContinue={() => setStep('delivery-destination')}
+          />
+        )}
+        {step === 'delivery-destination' && (
+          <DeliveryDestinationStepForm
             doorBookingRoute={doorBookingRoute}
+            deliveryMethod={deliveryMethod}
+            onDeliveryMethodChange={setDeliveryMethod}
+            onBack={() => setStep('sending-from-parcelpoint')}
             onContinue={() => setStep('your-details')}
           />
         )}
         {step === 'your-details' && (
           <YourDetailsForm
-            onBack={() => setStep('parcel-size-packaging')}
+            onBack={() => setStep('delivery-destination')}
             onContinue={() => setStep('receiver-details')}
           />
         )}
@@ -101,18 +131,23 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
           />
         )}
         {step === 'payment' && (
-          <PayOnlineScreen
+          <PaymentFlowScreen
             onBack={() => setStep('confirm-accept')}
-            onPaymentComplete={() => setStep('booking-success')}
+            onComplete={(method) =>
+              setStep(
+                method === 'cash'
+                  ? 'booking-success-cash'
+                  : 'booking-success-card',
+              )
+            }
           />
         )}
-        {step === 'agent-qr' && (
-          <ShowAgentQrScreen
-            onBack={() => setStep('payment')}
-            onAgentScanned={handleAgentScanned}
-          />
+        {step === 'booking-success-cash' && (
+          <BookingSuccessScreen key="booking-success-cash" variant="cash" />
         )}
-        {step === 'booking-success' && <BookingSuccessScreen />}
+        {step === 'booking-success-card' && (
+          <BookingSuccessScreen key="booking-success-card" variant="card" />
+        )}
         </PhoneFrame>
       </div>
     </div>

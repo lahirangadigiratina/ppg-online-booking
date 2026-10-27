@@ -40,6 +40,51 @@
 
 }
 
+/* Matches address search (~42px): step 1 store search + AddressSearchSelect */
+input.booking-search-input[type='search'] {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 12px 0 40px;
+  border-radius: 10px;
+  border: 1px solid var(--color-ppg-border);
+  background-color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input.booking-search-input[type='search']::placeholder {
+  color: #b8b8b8;
+}
+
+input.booking-search-input[type='search']:focus {
+  border-color: var(--color-ppg-orange);
+  box-shadow: 0 0 0 2px rgb(232 92 0 / 0.2);
+}
+
+input.booking-search-input-with-map[type='search'] {
+  padding-right: 44px;
+}
+
+/* Step 1: title + suggested store + search stay visible while list scrolls */
+/* Step 1: header fixed; only .sending-from-step-list scrolls */
+.sending-from-step-layout {
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.sending-from-step-list {
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Slim scrollbars for phone screen + modals (no Windows arrow buttons) */
 .ppg-scroll,
 .phone-screen-scroll,
@@ -51,6 +96,81 @@
 /* Inner step scroll: don't reserve a permanent right gutter (looked like extra margin) */
 .ppg-scroll {
   scrollbar-gutter: auto;
+}
+
+/* Parcel size step: always 2×2 (not one row of four) */
+.parcel-size-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+/* Collect modal: search + radius on one row, matched height */
+.collect-modal-search-row {
+  --collect-modal-control-height: 2.375rem; /* 38px — matches search input */
+}
+
+.collect-modal-search-input {
+  box-sizing: border-box;
+  height: var(--collect-modal-control-height);
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.25;
+}
+
+.collect-radius-select-compact {
+  width: 5.75rem;
+  min-width: 5.75rem;
+  flex-shrink: 0;
+  height: var(--collect-modal-control-height, 2.375rem);
+}
+
+.collect-radius-select-compact .collect-radius-trigger {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.collect-radius-select-compact .collect-radius-trigger-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+}
+
+.collect-radius-select-compact .collect-radius-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 0.875rem;
+  align-items: center;
+  column-gap: 0.25rem;
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.collect-radius-select-compact .collect-radius-option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collect-radius-select-compact .collect-radius-option-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  justify-self: end;
 }
 
 .phone-screen-scroll {

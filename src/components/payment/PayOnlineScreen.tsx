@@ -47,7 +47,7 @@ export function PayOnlineScreen({
         </FormStepFooter>
       }
     >
-      <StepHeading compact step={6} title="Payment" />
+      <StepHeading compact step={8} title="Card payment" />
       <p className="text-left text-xs leading-snug text-ppg-label">
         Complete your secure card payment for {TOTAL_AMOUNT}. You&apos;re all set
         once payment is confirmed — nothing else to do in-store.

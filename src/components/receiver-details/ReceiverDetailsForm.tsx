@@ -27,7 +27,7 @@ export function ReceiverDetailsForm({
         </FormStepFooter>
       }
     >
-      <StepHeading compact step={3} title="Receiver Details" />
+      <StepHeading compact step={4} title="Receiver Details" />
 
       <FormField label="Business Name (optional)" htmlFor="receiverBusinessName">
         <TextInput

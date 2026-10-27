@@ -108,6 +108,34 @@ export const COLLECT_STORES: CollectStore[] = [
   },
 ]
 
+/** In-store QR / deep link (demo): booking starts at this PARCELPOINT */
+export const DEFAULT_SENDING_PARCELPOINT_STORE_ID = 'queens-rd-pharmacy'
+
+export function getSendingParcelPointStore(): CollectStore {
+  return (
+    COLLECT_STORES.find(
+      (store) => store.id === DEFAULT_SENDING_PARCELPOINT_STORE_ID,
+    ) ?? COLLECT_STORES[0]
+  )
+}
+
+export function getCollectStoreById(storeId: string): CollectStore | undefined {
+  return COLLECT_STORES.find((store) => store.id === storeId)
+}
+
+export function filterSendingParcelPointStores(query: string): CollectStore[] {
+  const normalized = query.trim().toLowerCase()
+  const sorted = [...COLLECT_STORES].sort(
+    (a, b) => a.distanceKm - b.distanceKm,
+  )
+  if (!normalized) return sorted
+  return sorted.filter(
+    (store) =>
+      store.name.toLowerCase().includes(normalized) ||
+      store.address.toLowerCase().includes(normalized),
+  )
+}
+
 export function filterCollectStores(
   stores: CollectStore[],
   query: string,
