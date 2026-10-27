@@ -4,6 +4,8 @@ import { FormField } from './FormField'
 
 type VerifiedMobileFieldProps = {
   onVerifiedChange?: (verified: boolean, phone: string) => void
+  /** Shown under the active mobile / OTP field (e.g. form submit validation). */
+  error?: string | null
 }
 
 type Step = 'phone' | 'otp' | 'verified'
@@ -54,6 +56,7 @@ function initialAuMobileDisplay(): string {
 
 export function VerifiedMobileField({
   onVerifiedChange,
+  error: externalError,
 }: VerifiedMobileFieldProps) {
   const phoneInputId = useId()
   const otpInputId = useId()
@@ -137,7 +140,11 @@ export function VerifiedMobileField({
           </p>
         </div>
 
-        <FormField label="SMS code" htmlFor={otpInputId}>
+        <FormField
+          label="SMS code"
+          htmlFor={otpInputId}
+          error={otpError ?? externalError}
+        >
           <div className="flex min-w-0 items-stretch overflow-hidden rounded-[10px] border border-ppg-border bg-white focus-within:border-ppg-orange focus-within:ring-2 focus-within:ring-ppg-orange/20">
             <input
               id={otpInputId}
@@ -163,12 +170,6 @@ export function VerifiedMobileField({
             </button>
           </div>
         </FormField>
-
-        {otpError ? (
-          <p className="text-xs text-red-600" role="alert">
-            {otpError}
-          </p>
-        ) : null}
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <button
@@ -199,6 +200,7 @@ export function VerifiedMobileField({
           </>
         }
         htmlFor={phoneInputId}
+        error={phoneError ?? externalError}
       >
         <div className="flex min-w-0 items-stretch overflow-hidden rounded-[10px] border border-ppg-border bg-white focus-within:border-ppg-orange focus-within:ring-2 focus-within:ring-ppg-orange/20">
           <input
@@ -232,12 +234,6 @@ export function VerifiedMobileField({
           </button>
         </div>
       </FormField>
-
-      {phoneError ? (
-        <p className="text-xs text-red-600" role="alert">
-          {phoneError}
-        </p>
-      ) : null}
     </div>
   )
 }

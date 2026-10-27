@@ -5,6 +5,7 @@ type FormFieldProps = {
   htmlFor?: string
   children: ReactNode
   className?: string
+  error?: string | null
 }
 
 export function FormField({
@@ -12,6 +13,7 @@ export function FormField({
   htmlFor,
   children,
   className = '',
+  error,
 }: FormFieldProps) {
   return (
     <div className={`flex flex-col gap-1 ${className}`}>
@@ -19,6 +21,11 @@ export function FormField({
         {label}
       </label>
       {children}
+      {error ? (
+        <p className="text-xs text-red-600" role="alert">
+          {error}
+        </p>
+      ) : null}
     </div>
   )
 }

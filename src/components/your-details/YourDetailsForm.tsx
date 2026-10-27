@@ -12,15 +12,36 @@ type YourDetailsFormProps = {
   onContinue: () => void
 }
 
+type FieldErrors = {
+  mobile?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+}
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
 export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
   const [mobileVerified, setMobileVerified] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+
+  function clearFieldError(key: keyof FieldErrors) {
+    setFieldErrors((previous) => {
+      if (!previous[key]) {
+        return previous
+      }
+      const next = { ...previous }
+      delete next[key]
+      return next
+    })
+  }
 
   return (
     <BookingStepShell
       onSubmit={(event) => {
         event.preventDefault()
-        setSubmitError(null)
 
         const form = event.currentTarget
         const data = new FormData(form)
@@ -28,23 +49,29 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
         const lastName = String(data.get('lastName') ?? '').trim()
         const email = String(data.get('email') ?? '').trim()
 
+        const errors: FieldErrors = {}
+
         if (!mobileVerified) {
-          setSubmitError('Verify your mobile number before continuing.')
-          return
+          errors.mobile = 'Verify your mobile number before continuing.'
         }
         if (!firstName) {
-          setSubmitError('First name is required.')
-          return
+          errors.firstName = 'First name is required.'
         }
         if (!lastName) {
-          setSubmitError('Last name is required.')
-          return
+          errors.lastName = 'Last name is required.'
         }
         if (!email) {
-          setSubmitError('Email address is required.')
+          errors.email = 'Email address is required.'
+        } else if (!isValidEmail(email)) {
+          errors.email = 'Enter a valid email address.'
+        }
+
+        if (Object.keys(errors).length > 0) {
+          setFieldErrors(errors)
           return
         }
 
+        setFieldErrors({})
         onContinue()
       }}
       footer={
@@ -56,19 +83,14 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
       <StepHeading compact step={3} title="Your Details" bracket="Sender" />
 
       <VerifiedMobileField
+        error={fieldErrors.mobile}
         onVerifiedChange={(verified) => {
           setMobileVerified(verified)
           if (verified) {
-            setSubmitError(null)
+            clearFieldError('mobile')
           }
         }}
       />
-
-      {submitError ? (
-        <p className="text-xs text-red-600" role="alert">
-          {submitError}
-        </p>
-      ) : null}
 
       <FormField label="Business Name (optional)" htmlFor="businessName">
         <TextInput
@@ -87,6 +109,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="firstName"
+        error={fieldErrors.firstName}
       >
         <TextInput
           id="firstName"
@@ -94,6 +117,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="text"
           placeholder="Jane"
           autoComplete="given-name"
+          onChange={() => clearFieldError('firstName')}
         />
       </FormField>
 
@@ -104,6 +128,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="lastName"
+        error={fieldErrors.lastName}
       >
         <TextInput
           id="lastName"
@@ -111,6 +136,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="text"
           placeholder="Smith"
           autoComplete="family-name"
+          onChange={() => clearFieldError('lastName')}
         />
       </FormField>
 
@@ -121,6 +147,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="email"
+        error={fieldErrors.email}
       >
         <TextInput
           id="email"
@@ -128,6 +155,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="email"
           placeholder="jane@example.com"
           autoComplete="email"
+          onChange={() => clearFieldError('email')}
         />
       </FormField>
     </BookingStepShell>

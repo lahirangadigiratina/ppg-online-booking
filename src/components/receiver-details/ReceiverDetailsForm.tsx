@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FormField } from '../form/FormField'
 import { TextInput } from '../form/TextInput'
 import { BookingStepShell } from '../layout/BookingStepShell'
@@ -10,15 +11,69 @@ type ReceiverDetailsFormProps = {
   onContinue: () => void
 }
 
+type FieldErrors = {
+  firstName?: string
+  lastName?: string
+  email?: string
+  mobile?: string
+}
+
+function isValidEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+}
+
 export function ReceiverDetailsForm({
   onBack,
   onContinue,
 }: ReceiverDetailsFormProps) {
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+
+  function clearFieldError(key: keyof FieldErrors) {
+    setFieldErrors((previous) => {
+      if (!previous[key]) {
+        return previous
+      }
+      const next = { ...previous }
+      delete next[key]
+      return next
+    })
+  }
+
   return (
     <BookingStepShell
       scrollableBody={false}
       onSubmit={(event) => {
         event.preventDefault()
+
+        const data = new FormData(event.currentTarget)
+        const firstName = String(data.get('receiverFirstName') ?? '').trim()
+        const lastName = String(data.get('receiverLastName') ?? '').trim()
+        const email = String(data.get('receiverEmail') ?? '').trim()
+        const mobile = String(data.get('receiverMobile') ?? '').trim()
+
+        const errors: FieldErrors = {}
+
+        if (!firstName) {
+          errors.firstName = 'First name is required.'
+        }
+        if (!lastName) {
+          errors.lastName = 'Last name is required.'
+        }
+        if (!email) {
+          errors.email = 'Email is required.'
+        } else if (!isValidEmail(email)) {
+          errors.email = 'Enter a valid email address.'
+        }
+        if (!mobile) {
+          errors.mobile = 'Mobile is required.'
+        }
+
+        if (Object.keys(errors).length > 0) {
+          setFieldErrors(errors)
+          return
+        }
+
+        setFieldErrors({})
         onContinue()
       }}
       footer={
@@ -46,6 +101,7 @@ export function ReceiverDetailsForm({
           </>
         }
         htmlFor="receiverFirstName"
+        error={fieldErrors.firstName}
       >
         <TextInput
           id="receiverFirstName"
@@ -53,6 +109,7 @@ export function ReceiverDetailsForm({
           type="text"
           placeholder="Jane"
           autoComplete="given-name"
+          onChange={() => clearFieldError('firstName')}
         />
       </FormField>
 
@@ -63,6 +120,7 @@ export function ReceiverDetailsForm({
           </>
         }
         htmlFor="receiverLastName"
+        error={fieldErrors.lastName}
       >
         <TextInput
           id="receiverLastName"
@@ -70,6 +128,7 @@ export function ReceiverDetailsForm({
           type="text"
           placeholder="Smith"
           autoComplete="family-name"
+          onChange={() => clearFieldError('lastName')}
         />
       </FormField>
 
@@ -80,6 +139,7 @@ export function ReceiverDetailsForm({
           </>
         }
         htmlFor="receiverEmail"
+        error={fieldErrors.email}
       >
         <TextInput
           id="receiverEmail"
@@ -87,6 +147,7 @@ export function ReceiverDetailsForm({
           type="email"
           placeholder="jane@example.com"
           autoComplete="email"
+          onChange={() => clearFieldError('email')}
         />
       </FormField>
 
@@ -97,6 +158,7 @@ export function ReceiverDetailsForm({
           </>
         }
         htmlFor="receiverMobile"
+        error={fieldErrors.mobile}
       >
         <TextInput
           id="receiverMobile"
@@ -104,6 +166,7 @@ export function ReceiverDetailsForm({
           type="tel"
           placeholder="+61 412 345 678"
           autoComplete="tel"
+          onChange={() => clearFieldError('mobile')}
         />
       </FormField>
 
