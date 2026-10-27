@@ -10,6 +10,8 @@ import { ContinueButton } from '../ui/ContinueButton'
 import { SendingFromParcelPointStoreCard } from './SendingFromParcelPointSection'
 import { SendingFromStoreOption } from './SendingFromStoreOption'
 
+const NEARBY_LOCATIONS_ON_STEP = 3
+
 type SendingFromParcelPointFormProps = {
   initialStore: CollectStore
   selectedStore: CollectStore
@@ -31,6 +33,12 @@ export function SendingFromParcelPointForm({
     () => filterSendingParcelPointStores(searchQuery),
     [searchQuery],
   )
+
+  const storesOnStep = useMemo(() => {
+    return filteredStores
+      .filter((store) => store.id !== selectedStore.id)
+      .slice(0, NEARBY_LOCATIONS_ON_STEP)
+  }, [filteredStores, selectedStore.id])
 
   const suggestedBadge =
     selectedStore.id === initialStore.id ? 'Suggested location' : undefined
@@ -87,9 +95,9 @@ export function SendingFromParcelPointForm({
         </div>
 
         <div className="ppg-scroll sending-from-step-list min-h-0 flex-1 overflow-y-auto overscroll-contain pr-0.5">
-          {filteredStores.length > 0 ? (
+          {storesOnStep.length > 0 ? (
             <div className="flex flex-col gap-2 pb-1">
-              {filteredStores.map((store) => (
+              {storesOnStep.map((store) => (
                 <SendingFromStoreOption
                   key={store.id}
                   store={store}

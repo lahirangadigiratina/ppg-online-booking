@@ -4,6 +4,7 @@ import { BookingStepShell } from '../layout/BookingStepShell'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { FormStepFooter } from '../ui/FormStepFooter'
+import { PAY_ONLINE_FORM_ID, PayOnlineCardForm } from './PayOnlineCardForm'
 
 const TOTAL_AMOUNT = '$17.66'
 
@@ -64,29 +65,40 @@ export function PaymentMethodScreen({
 }: PaymentMethodScreenProps) {
   const [method, setMethod] = useState<PaymentMethodChoice | null>(null)
 
-  const continueLabel =
-    method === 'card' || method === 'cash' ? 'Next' : 'Continue'
+  function handleBack() {
+    if (method === 'card') {
+      setMethod(null)
+      return
+    }
+    onBack()
+  }
+
+  const payOnlineSelected = method === 'card'
 
   return (
     <BookingStepShell
       footerKey={method ?? 'none'}
       footer={
-        <FormStepFooter onBack={onBack}>
-          <ContinueButton
-            type="button"
-            label={continueLabel}
-            disabled={method == null}
-            className={
-              method == null
-                ? 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
-                : undefined
-            }
-            onClick={() => {
-              if (method === 'card' || method === 'cash') {
-                onContinue(method)
+        <FormStepFooter onBack={handleBack}>
+          {payOnlineSelected ? (
+            <ContinueButton type="submit" form={PAY_ONLINE_FORM_ID} label="Pay" />
+          ) : (
+            <ContinueButton
+              type="button"
+              label={method === 'cash' ? 'Next' : 'Continue'}
+              disabled={method == null}
+              className={
+                method == null
+                  ? 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
+                  : undefined
               }
-            }}
-          />
+              onClick={() => {
+                if (method === 'cash') {
+                  onContinue('cash')
+                }
+              }}
+            />
+          )}
         </FormStepFooter>
       }
     >
@@ -100,9 +112,20 @@ export function PaymentMethodScreen({
           title="Pay Online"
           description="Payment gateway"
           icon={CreditCard}
-          selected={method === 'card'}
+          selected={payOnlineSelected}
           onSelect={() => setMethod('card')}
         />
+
+        {payOnlineSelected ? (
+          <PayOnlineCardForm
+            totalAmount={TOTAL_AMOUNT}
+            onSubmit={(event) => {
+              event.preventDefault()
+              onContinue('card')
+            }}
+          />
+        ) : null}
+
         <MethodOption
           title="Pay Instore"
           description="EFTPOS and cash"

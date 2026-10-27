@@ -64,6 +64,7 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
   const lockPhoneHeight =
     step === 'sending-from-parcelpoint' ||
     step === 'delivery-destination' ||
+    step === 'your-details' ||
     step === 'receiver-details' ||
     step === 'parcel-contents' ||
     step === 'confirm-accept' ||
