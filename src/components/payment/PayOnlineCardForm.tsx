@@ -1,5 +1,8 @@
 import { CreditCard, Lock } from 'lucide-react'
-import type { FormEventHandler, ReactNode } from 'react'
+import { useEffect, useMemo, useState, type FormEventHandler, type ReactNode } from 'react'
+import {
+  hasRequiredText,
+} from '../form/formValidation'
 
 export const PAY_ONLINE_FORM_ID = 'pay-online-form'
 
@@ -25,12 +28,34 @@ function CardBrandBadge({
 type PayOnlineCardFormProps = {
   totalAmount?: string
   onSubmit: FormEventHandler<HTMLFormElement>
+  onValidityChange?: (valid: boolean) => void
 }
 
 export function PayOnlineCardForm({
   totalAmount = '$17.66',
   onSubmit,
+  onValidityChange,
 }: PayOnlineCardFormProps) {
+  const [cardNumber, setCardNumber] = useState('')
+  const [cardExpiry, setCardExpiry] = useState('')
+  const [cardCvc, setCardCvc] = useState('')
+  const [cardName, setCardName] = useState('')
+
+  const isValid = useMemo(() => {
+    const digits = cardNumber.replace(/\D/g, '')
+    const cvc = cardCvc.replace(/\D/g, '')
+    return (
+      digits.length >= 15 &&
+      hasRequiredText(cardExpiry) &&
+      cvc.length >= 3 &&
+      hasRequiredText(cardName)
+    )
+  }, [cardCvc, cardExpiry, cardName, cardNumber])
+
+  useEffect(() => {
+    onValidityChange?.(isValid)
+  }, [isValid, onValidityChange])
+
   return (
     <div className="flex flex-col gap-2">
       <p className="text-left text-xs leading-snug text-ppg-label">
@@ -63,6 +88,8 @@ export function PayOnlineCardForm({
               inputMode="numeric"
               autoComplete="cc-number"
               placeholder="1234 1234 1234 1234"
+              value={cardNumber}
+              onChange={(event) => setCardNumber(event.target.value)}
               className={`${cardFieldClassName} pr-[7.5rem]`}
             />
             <div
@@ -83,6 +110,8 @@ export function PayOnlineCardForm({
               inputMode="numeric"
               autoComplete="cc-exp"
               placeholder="MM / YY"
+              value={cardExpiry}
+              onChange={(event) => setCardExpiry(event.target.value)}
               className={`${cardFieldClassName} min-w-0 flex-1 border-r border-ppg-border`}
             />
             <div className="relative min-w-0 flex-1">
@@ -93,6 +122,8 @@ export function PayOnlineCardForm({
                 inputMode="numeric"
                 autoComplete="cc-csc"
                 placeholder="CVC"
+                value={cardCvc}
+                onChange={(event) => setCardCvc(event.target.value)}
                 className={`${cardFieldClassName} pr-9`}
               />
               <CreditCard
@@ -115,6 +146,8 @@ export function PayOnlineCardForm({
           name="cardName"
           type="text"
           autoComplete="cc-name"
+          value={cardName}
+          onChange={(event) => setCardName(event.target.value)}
           className="mt-1 w-full rounded-lg border border-ppg-border bg-[#f7f7f7] px-3 py-2.5 text-sm text-black outline-none placeholder:text-[#b8b8b8] focus:border-ppg-orange focus:ring-2 focus:ring-ppg-orange/20"
         />
 

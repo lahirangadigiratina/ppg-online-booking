@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { BookingStepShell } from '../layout/BookingStepShell'
 import { BOOKING_HELP_TEXT_CLASS } from '../layout/bookingStepStyles'
 import { StepHeading } from '../steps/StepHeading'
@@ -18,6 +18,11 @@ export function ParcelSizePackagingForm({
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
   const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
 
+  const canContinue = useMemo(
+    () => selectedSizeId != null && needsPackaging !== null,
+    [needsPackaging, selectedSizeId],
+  )
+
   return (
     <BookingStepShell
       onSubmit={(event) => {
@@ -26,7 +31,7 @@ export function ParcelSizePackagingForm({
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="submit" />
+          <ContinueButton type="submit" disabled={!canContinue} />
         </FormStepFooter>
       }
     >

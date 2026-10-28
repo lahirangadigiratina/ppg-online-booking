@@ -1,5 +1,6 @@
 import { Camera } from 'lucide-react'
-import { useId, useState } from 'react'
+import { useId, useMemo, useState } from 'react'
+import { hasRequiredParcelValue } from '../form/formValidation'
 import { DangerousGoodsModal } from './DangerousGoodsModal'
 import { FormField } from '../form/FormField'
 import { TextInput } from '../form/TextInput'
@@ -26,6 +27,11 @@ export function ParcelContentsForm({
   const photoInputId = useId()
   const [dangerousGoodsOpen, setDangerousGoodsOpen] = useState(false)
 
+  const canContinue = useMemo(
+    () => hasRequiredParcelValue(parcelValue),
+    [parcelValue],
+  )
+
   return (
     <BookingStepShell
       onSubmit={(event) => {
@@ -34,7 +40,7 @@ export function ParcelContentsForm({
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="submit" />
+          <ContinueButton type="submit" disabled={!canContinue} />
         </FormStepFooter>
       }
     >

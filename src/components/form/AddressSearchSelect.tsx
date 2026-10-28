@@ -9,12 +9,14 @@ type AddressSearchSelectProps = {
   id?: string
   name?: string
   placeholder?: string
+  onSelectedChange?: (option: AddressSearchOption | null) => void
 }
 
 export function AddressSearchSelect({
   id: idProp,
   name = 'receiverAddress',
   placeholder = 'Search address',
+  onSelectedChange,
 }: AddressSearchSelectProps) {
   const generatedId = useId()
   const id = idProp ?? generatedId
@@ -53,6 +55,7 @@ export function AddressSearchSelect({
     setSelected(option)
     setQuery('')
     setOpen(false)
+    onSelectedChange?.(option)
   }
 
   return (
@@ -84,6 +87,7 @@ export function AddressSearchSelect({
         onChange={(event) => {
           setQuery(event.target.value)
           setSelected(null)
+          onSelectedChange?.(null)
           setOpen(true)
         }}
         onFocus={() => setOpen(true)}

@@ -1,4 +1,10 @@
+import { useMemo, useState } from 'react'
 import { FormField } from '../form/FormField'
+import {
+  hasRequiredMobileText,
+  hasRequiredText,
+  isValidEmail,
+} from '../form/formValidation'
 import { TextInput } from '../form/TextInput'
 import { BookingStepShell } from '../layout/BookingStepShell'
 import { StepHeading } from '../steps/StepHeading'
@@ -14,16 +20,31 @@ export function ReceiverDetailsForm({
   onBack,
   onContinue,
 }: ReceiverDetailsFormProps) {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [mobile, setMobile] = useState('')
+
+  const canContinue = useMemo(
+    () =>
+      hasRequiredText(firstName) &&
+      hasRequiredText(lastName) &&
+      isValidEmail(email) &&
+      hasRequiredMobileText(mobile),
+    [email, firstName, lastName, mobile],
+  )
+
   return (
     <BookingStepShell
       scrollableBody={false}
       onSubmit={(event) => {
         event.preventDefault()
+        if (!canContinue) return
         onContinue()
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="submit" />
+          <ContinueButton type="submit" disabled={!canContinue} />
         </FormStepFooter>
       }
     >
@@ -53,6 +74,8 @@ export function ReceiverDetailsForm({
           type="text"
           placeholder="Jane"
           autoComplete="given-name"
+          value={firstName}
+          onChange={(event) => setFirstName(event.target.value)}
         />
       </FormField>
 
@@ -70,6 +93,8 @@ export function ReceiverDetailsForm({
           type="text"
           placeholder="Smith"
           autoComplete="family-name"
+          value={lastName}
+          onChange={(event) => setLastName(event.target.value)}
         />
       </FormField>
 
@@ -87,6 +112,8 @@ export function ReceiverDetailsForm({
           type="email"
           placeholder="jane@example.com"
           autoComplete="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
         />
       </FormField>
 
@@ -104,6 +131,8 @@ export function ReceiverDetailsForm({
           type="tel"
           placeholder="+61 412 345 678"
           autoComplete="tel"
+          value={mobile}
+          onChange={(event) => setMobile(event.target.value)}
         />
       </FormField>
 

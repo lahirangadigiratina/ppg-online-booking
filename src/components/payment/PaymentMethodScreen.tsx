@@ -64,6 +64,7 @@ export function PaymentMethodScreen({
   onContinue,
 }: PaymentMethodScreenProps) {
   const [method, setMethod] = useState<PaymentMethodChoice | null>(null)
+  const [cardPaymentValid, setCardPaymentValid] = useState(false)
 
   function handleBack() {
     if (method === 'card') {
@@ -74,6 +75,8 @@ export function PaymentMethodScreen({
   }
 
   const payOnlineSelected = method === 'card'
+  const canContinueFooter =
+    method === 'cash' || (payOnlineSelected && cardPaymentValid)
 
   return (
     <BookingStepShell
@@ -81,12 +84,22 @@ export function PaymentMethodScreen({
       footer={
         <FormStepFooter onBack={handleBack}>
           {payOnlineSelected ? (
-            <ContinueButton type="submit" form={PAY_ONLINE_FORM_ID} label="Pay" />
+            <ContinueButton
+              type="submit"
+              form={PAY_ONLINE_FORM_ID}
+              label="Pay"
+              disabled={!cardPaymentValid}
+            />
           ) : (
             <ContinueButton
               type="button"
               label={method === 'cash' ? 'Next' : 'Continue'}
-              onClick={() => onContinue('cash')}
+              disabled={!canContinueFooter}
+              onClick={() => {
+                if (method === 'cash') {
+                  onContinue('cash')
+                }
+              }}
             />
           )}
         </FormStepFooter>
@@ -103,14 +116,19 @@ export function PaymentMethodScreen({
           description="Payment gateway"
           icon={CreditCard}
           selected={payOnlineSelected}
-          onSelect={() => setMethod('card')}
+          onSelect={() => {
+            setMethod('card')
+            setCardPaymentValid(false)
+          }}
         />
 
         {payOnlineSelected ? (
           <PayOnlineCardForm
             totalAmount={TOTAL_AMOUNT}
+            onValidityChange={setCardPaymentValid}
             onSubmit={(event) => {
               event.preventDefault()
+              if (!cardPaymentValid) return
               onContinue('card')
             }}
           />
@@ -121,7 +139,10 @@ export function PaymentMethodScreen({
           description="EFTPOS and cash"
           icon={Banknote}
           selected={method === 'cash'}
-          onSelect={() => setMethod('cash')}
+          onSelect={() => {
+            setMethod('cash')
+            setCardPaymentValid(false)
+          }}
         />
       </div>
 

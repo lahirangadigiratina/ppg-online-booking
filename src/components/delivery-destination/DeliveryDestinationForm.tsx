@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ParcelPointLogo } from '../branding/ParcelPointLogo'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
@@ -23,6 +23,14 @@ export function DeliveryDestinationForm({
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod | null>(
     null,
   )
+  const [hasReceiverAddress, setHasReceiverAddress] = useState(false)
+  const [hasCollectStore, setHasCollectStore] = useState(false)
+
+  const canContinue = useMemo(() => {
+    if (!deliveryMethod || !hasReceiverAddress) return false
+    if (deliveryMethod === 'parcelpoint' && !hasCollectStore) return false
+    return true
+  }, [deliveryMethod, hasCollectStore, hasReceiverAddress])
 
   return (
     <>
@@ -41,11 +49,18 @@ export function DeliveryDestinationForm({
         <DeliveryDestinationSection
           doorBookingRoute={doorBookingRoute}
           deliveryMethod={deliveryMethod}
-          onDeliveryMethodChange={setDeliveryMethod}
+          onDeliveryMethodChange={(method) => {
+            setDeliveryMethod(method)
+            if (method !== 'parcelpoint') {
+              setHasCollectStore(false)
+            }
+          }}
+          onReceiverAddressSelectedChange={setHasReceiverAddress}
+          onCollectStoreSelectedChange={setHasCollectStore}
         />
 
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="submit" />
+          <ContinueButton type="submit" disabled={!canContinue} />
         </FormStepFooter>
       </form>
     </>

@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import type { DoorBookingRoute } from '../booking/bookingRoute'
 import { BookingSuccessScreen } from '../components/booking-success/BookingSuccessScreen'
 import { ConfirmAcceptForm } from '../components/confirm-accept/ConfirmAcceptForm'
@@ -34,7 +35,19 @@ type BookingPageProps = {
   doorBookingRoute: DoorBookingRoute
 }
 
+function parseSendingLocationOverride(
+  value: string | null,
+): 'on' | 'off' | null {
+  if (value === 'on' || value === 'off') return value
+  return null
+}
+
 export function BookingPage({ doorBookingRoute }: BookingPageProps) {
+  const [searchParams] = useSearchParams()
+  const sendingLocationOverride = parseSendingLocationOverride(
+    searchParams.get('sendingLocation'),
+  )
+
   const [step, setStep] = useState<BookingStep>('sending-from-parcelpoint')
   const [phoneScreenHeight, setPhoneScreenHeight] = useState<number>()
   const [parcelValue, setParcelValue] = useState('')
@@ -90,9 +103,10 @@ export function BookingPage({ doorBookingRoute }: BookingPageProps) {
       >
         {step === 'sending-from-parcelpoint' && (
           <SendingFromParcelPointForm
-            initialStore={initialSendingFromStore}
+            nearestStore={initialSendingFromStore}
             selectedStore={sendingFromStore}
             onSelectedStoreChange={(store) => setSendingFromStoreId(store.id)}
+            sendingLocationOverride={sendingLocationOverride}
             onContinue={() => setStep('delivery-destination')}
           />
         )}

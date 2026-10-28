@@ -1,119 +1,56 @@
-import { useMemo, useState } from 'react'
-import type { CollectRadiusOption } from '../delivery-destination/CollectRadiusSelect'
-import { BookingSearchField } from '../form/BookingSearchField'
+import { useState } from 'react'
 import type { CollectStore } from '../delivery-destination/collectStoreOptions'
-import { filterSendingParcelPointStores } from '../delivery-destination/collectStoreOptions'
-import { SendingFromParcelPointMapModal } from './SendingFromParcelPointMapModal'
 import { BookingStepShell } from '../layout/BookingStepShell'
-import { BOOKING_SECTION_LABEL_CLASS } from '../layout/bookingStepStyles'
+import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
-import { SendingFromParcelPointStoreCard } from './SendingFromParcelPointSection'
-import { SendingFromStoreOption } from './SendingFromStoreOption'
-
-const NEARBY_LOCATIONS_ON_STEP = 3
+import { FormStepFooter } from '../ui/FormStepFooter'
+import { SendingFromStepSection } from './SendingFromStepSection'
 
 type SendingFromParcelPointFormProps = {
-  initialStore: CollectStore
+  nearestStore: CollectStore
   selectedStore: CollectStore
   onSelectedStoreChange: (store: CollectStore) => void
+  sendingLocationOverride?: 'on' | 'off' | null
   onContinue: () => void
 }
 
 export function SendingFromParcelPointForm({
-  initialStore,
+  nearestStore,
   selectedStore,
   onSelectedStoreChange,
+  sendingLocationOverride = null,
   onContinue,
 }: SendingFromParcelPointFormProps) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [mapOpen, setMapOpen] = useState(false)
-  const [mapRadius, setMapRadius] = useState<CollectRadiusOption>('2 km')
-
-  const filteredStores = useMemo(
-    () => filterSendingParcelPointStores(searchQuery),
-    [searchQuery],
-  )
-
-  const storesOnStep = useMemo(() => {
-    return filteredStores
-      .filter((store) => store.id !== selectedStore.id)
-      .slice(0, NEARBY_LOCATIONS_ON_STEP)
-  }, [filteredStores, selectedStore.id])
-
-  const suggestedBadge =
-    selectedStore.id === initialStore.id ? 'Suggested location' : undefined
+  const [canContinue, setCanContinue] = useState(false)
 
   return (
     <BookingStepShell
-      scrollableBody={false}
       onSubmit={(event) => {
         event.preventDefault()
+        if (!canContinue) return
         onContinue()
       }}
       footer={
-        <div className="flex justify-end">
+        <FormStepFooter>
           <ContinueButton
             type="submit"
             label="Confirm"
+            disabled={!canContinue}
             className="min-w-[140px]"
           />
-        </div>
+        </FormStepFooter>
       }
     >
-      <div className="sending-from-step-layout flex min-h-0 flex-1 flex-col gap-2.5 overflow-hidden">
-        <div className="flex shrink-0 flex-col gap-2.5 bg-white">
-          <h1 className="text-lg font-bold leading-snug tracking-tight text-black">
-            Sending from this PARCELPOINT
-          </h1>
+      <StepHeading compact step={1} title="Sending from this PARCELPOINT" />
 
-          <SendingFromParcelPointStoreCard
-            store={selectedStore}
-            badge={suggestedBadge}
-          />
-
-          <BookingSearchField
-            showMapButton
-            onMapClick={() => setMapOpen(true)}
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Search PARCELPOINT locations..."
-            autoComplete="off"
-          />
-
-          <SendingFromParcelPointMapModal
-            open={mapOpen}
-            radius={mapRadius}
-            onRadiusChange={setMapRadius}
-            selectedStoreId={selectedStore.id}
-            onSelectStore={onSelectedStoreChange}
-            onClose={() => setMapOpen(false)}
-          />
-
-          <h2 className={BOOKING_SECTION_LABEL_CLASS}>
-            {searchQuery.trim() ? 'Search results' : 'Nearby locations'}
-          </h2>
-        </div>
-
-        <div className="ppg-scroll sending-from-step-list min-h-0 flex-1 overflow-y-auto overscroll-contain pr-0.5">
-          {storesOnStep.length > 0 ? (
-            <div className="flex flex-col gap-2 pb-1">
-              {storesOnStep.map((store) => (
-                <SendingFromStoreOption
-                  key={store.id}
-                  store={store}
-                  selected={store.id === selectedStore.id}
-                  onSelect={() => onSelectedStoreChange(store)}
-                />
-              ))}
-            </div>
-          ) : (
-            <p className="rounded-xl border border-dashed border-ppg-border bg-[#fafafa] px-3 py-5 text-center text-xs text-ppg-label">
-              No locations match your search. Try a different name or suburb.
-            </p>
-          )}
-        </div>
-        <input type="hidden" name="sendingFromStoreId" value={selectedStore.id} />
-      </div>
+      <SendingFromStepSection
+        showHeading={false}
+        nearestStore={nearestStore}
+        selectedStore={selectedStore}
+        onSelectedStoreChange={onSelectedStoreChange}
+        onCompleteChange={setCanContinue}
+        locationOverride={sendingLocationOverride}
+      />
     </BookingStepShell>
   )
 }

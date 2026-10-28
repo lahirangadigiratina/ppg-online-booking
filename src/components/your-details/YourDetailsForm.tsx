@@ -1,4 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import {
+  hasRequiredText,
+  isValidEmail,
+} from '../form/formValidation'
 import {
   initialAuMobileDisplay,
   isCompleteAuMobile,
@@ -49,13 +53,24 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
     setMobileLookupMessage('We found your saved details and filled them in.')
   }
 
+  const canContinue = useMemo(
+    () =>
+      isCompleteAuMobile(mobile) &&
+      hasRequiredText(firstName) &&
+      hasRequiredText(lastName) &&
+      isValidEmail(email),
+    [email, firstName, lastName, mobile],
+  )
+
   return (
     <BookingStepShell
       onSubmit={(event) => {
         event.preventDefault()
         const trimmed = mobile.trim()
-        if (!isCompleteAuMobile(trimmed)) {
-          setMobileError('Enter a valid Australian mobile number.')
+        if (!canContinue) {
+          if (!isCompleteAuMobile(trimmed)) {
+            setMobileError('Enter a valid Australian mobile number.')
+          }
           return
         }
         setMobileError(null)
@@ -63,7 +78,7 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="submit" />
+          <ContinueButton type="submit" disabled={!canContinue} />
         </FormStepFooter>
       }
     >

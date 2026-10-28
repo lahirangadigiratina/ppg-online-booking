@@ -15,12 +15,16 @@ type DeliveryDestinationSectionProps = {
   doorBookingRoute: DoorBookingRoute
   deliveryMethod: DeliveryMethod | null
   onDeliveryMethodChange: (method: DeliveryMethod) => void
+  onReceiverAddressSelectedChange?: (selected: boolean) => void
+  onCollectStoreSelectedChange?: (selected: boolean) => void
 }
 
 export function DeliveryDestinationSection({
   doorBookingRoute,
   deliveryMethod,
   onDeliveryMethodChange,
+  onReceiverAddressSelectedChange,
+  onCollectStoreSelectedChange,
 }: DeliveryDestinationSectionProps) {
   const [collectRadius, setCollectRadius] =
     useState<CollectRadiusOption>('2 km')
@@ -42,7 +46,13 @@ export function DeliveryDestinationSection({
         }
         htmlFor="receiverAddress"
       >
-        <AddressSearchSelect id="receiverAddress" name="receiverAddress" />
+        <AddressSearchSelect
+          id="receiverAddress"
+          name="receiverAddress"
+          onSelectedChange={(option) =>
+            onReceiverAddressSelectedChange?.(option != null)
+          }
+        />
       </FormField>
 
       <section className="flex flex-col gap-2">
@@ -136,7 +146,10 @@ export function DeliveryDestinationSection({
         radius={collectRadius}
         selectedStoreId={selectedCollectStore?.id}
         onRadiusChange={setCollectRadius}
-        onSelectStore={setSelectedCollectStore}
+        onSelectStore={(store) => {
+          setSelectedCollectStore(store)
+          onCollectStoreSelectedChange?.(true)
+        }}
         onClose={() => setCollectModalOpen(false)}
       />
     </>

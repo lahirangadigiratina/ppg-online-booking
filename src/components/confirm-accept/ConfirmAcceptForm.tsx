@@ -115,11 +115,17 @@ export function ConfirmAcceptForm({
     setCouponError(null)
   }
 
+  const canContinue = termsAccepted && noDangerousGoods
+
   return (
     <BookingStepShell
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton type="button" onClick={onContinueToPayment}>
+          <ContinueButton
+            type="button"
+            disabled={!canContinue}
+            onClick={onContinueToPayment}
+          >
             Make Payment
           </ContinueButton>
         </FormStepFooter>
