@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import {
+  initialAuMobileDisplay,
+  isCompleteAuMobile,
+} from '../form/auMobileInput'
 import { FormField } from '../form/FormField'
 import { TextInput } from '../form/TextInput'
 import { VerifiedMobileField } from '../form/VerifiedMobileField'
@@ -6,72 +10,55 @@ import { BookingStepShell } from '../layout/BookingStepShell'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { FormStepFooter } from '../ui/FormStepFooter'
+import { lookupSenderByMobile } from './senderDetailsLookup'
 
 type YourDetailsFormProps = {
   onBack: () => void
   onContinue: () => void
 }
 
-type FieldErrors = {
-  mobile?: string
-  firstName?: string
-  lastName?: string
-  email?: string
-}
-
-function isValidEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-}
-
 export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
-  const [mobileVerified, setMobileVerified] = useState(false)
-  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+  const [mobile, setMobile] = useState(initialAuMobileDisplay)
+  const [mobileError, setMobileError] = useState<string | null>(null)
+  const [businessName, setBusinessName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [mobileLookupMessage, setMobileLookupMessage] = useState<string | null>(
+    null,
+  )
 
-  function clearFieldError(key: keyof FieldErrors) {
-    setFieldErrors((previous) => {
-      if (!previous[key]) {
-        return previous
-      }
-      const next = { ...previous }
-      delete next[key]
-      return next
-    })
+  function handleMobileLookup(phone: string) {
+    if (!phone) {
+      setMobileError('Enter a valid Australian mobile number.')
+      setMobileLookupMessage(null)
+      return
+    }
+    setMobileError(null)
+
+    const saved = lookupSenderByMobile(phone)
+    if (!saved) {
+      setMobileLookupMessage(null)
+      return
+    }
+
+    setBusinessName(saved.businessName ?? '')
+    setFirstName(saved.firstName)
+    setLastName(saved.lastName)
+    setEmail(saved.email)
+    setMobileLookupMessage('We found your saved details and filled them in.')
   }
 
   return (
     <BookingStepShell
       onSubmit={(event) => {
         event.preventDefault()
-
-        const form = event.currentTarget
-        const data = new FormData(form)
-        const firstName = String(data.get('firstName') ?? '').trim()
-        const lastName = String(data.get('lastName') ?? '').trim()
-        const email = String(data.get('email') ?? '').trim()
-
-        const errors: FieldErrors = {}
-
-        if (!mobileVerified) {
-          errors.mobile = 'Verify your mobile number before continuing.'
-        }
-        if (!firstName) {
-          errors.firstName = 'First name is required.'
-        }
-        if (!lastName) {
-          errors.lastName = 'Last name is required.'
-        }
-        if (!email) {
-          errors.email = 'Email address is required.'
-        } else if (!isValidEmail(email)) {
-          errors.email = 'Enter a valid email address.'
-        }
-
-        if (Object.keys(errors).length > 0) {
-          setFieldErrors(errors)
+        const trimmed = mobile.trim()
+        if (!isCompleteAuMobile(trimmed)) {
+          setMobileError('Enter a valid Australian mobile number.')
           return
         }
-
-        setFieldErrors({})
+        setMobileError(null)
         onContinue()
       }}
       footer={
@@ -82,15 +69,23 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
     >
       <StepHeading compact step={3} title="Your Details" bracket="Sender" />
 
-      <VerifiedMobileField
-        error={fieldErrors.mobile}
-        onVerifiedChange={(verified) => {
-          setMobileVerified(verified)
-          if (verified) {
-            clearFieldError('mobile')
-          }
-        }}
-      />
+      <div className="flex flex-col gap-1">
+        <VerifiedMobileField
+          value={mobile}
+          onChange={(next) => {
+            setMobile(next)
+            setMobileError(null)
+            setMobileLookupMessage(null)
+          }}
+          onLookup={handleMobileLookup}
+          error={mobileError}
+        />
+        {mobileLookupMessage ? (
+          <p className="text-[11px] leading-snug text-ppg-verified">
+            {mobileLookupMessage}
+          </p>
+        ) : null}
+      </div>
 
       <FormField label="Business Name (optional)" htmlFor="businessName">
         <TextInput
@@ -99,6 +94,8 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="text"
           placeholder="Hubbed"
           autoComplete="organization"
+          value={businessName}
+          onChange={(event) => setBusinessName(event.target.value)}
         />
       </FormField>
 
@@ -109,7 +106,6 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="firstName"
-        error={fieldErrors.firstName}
       >
         <TextInput
           id="firstName"
@@ -117,7 +113,8 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="text"
           placeholder="Jane"
           autoComplete="given-name"
-          onChange={() => clearFieldError('firstName')}
+          value={firstName}
+          onChange={(event) => setFirstName(event.target.value)}
         />
       </FormField>
 
@@ -128,7 +125,6 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="lastName"
-        error={fieldErrors.lastName}
       >
         <TextInput
           id="lastName"
@@ -136,7 +132,8 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="text"
           placeholder="Smith"
           autoComplete="family-name"
-          onChange={() => clearFieldError('lastName')}
+          value={lastName}
+          onChange={(event) => setLastName(event.target.value)}
         />
       </FormField>
 
@@ -147,7 +144,6 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           </>
         }
         htmlFor="email"
-        error={fieldErrors.email}
       >
         <TextInput
           id="email"
@@ -155,7 +151,8 @@ export function YourDetailsForm({ onBack, onContinue }: YourDetailsFormProps) {
           type="email"
           placeholder="jane@example.com"
           autoComplete="email"
-          onChange={() => clearFieldError('email')}
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
         />
       </FormField>
     </BookingStepShell>

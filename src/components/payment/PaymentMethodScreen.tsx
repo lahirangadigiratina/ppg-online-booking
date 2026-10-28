@@ -86,17 +86,7 @@ export function PaymentMethodScreen({
             <ContinueButton
               type="button"
               label={method === 'cash' ? 'Next' : 'Continue'}
-              disabled={method == null}
-              className={
-                method == null
-                  ? 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
-                  : undefined
-              }
-              onClick={() => {
-                if (method === 'cash') {
-                  onContinue('cash')
-                }
-              }}
+              onClick={() => onContinue('cash')}
             />
           )}
         </FormStepFooter>

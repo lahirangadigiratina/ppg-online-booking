@@ -24,7 +24,7 @@ export function ShowAgentQrScreen({
     <BookingStepShell>
       <div className="flex flex-col items-center gap-4 pb-2 text-center">
         <div>
-          <h1 className="text-lg font-bold text-black">Show this to the agent</h1>
+          <h1 className="text-lg font-bold text-black">Show this at the counter</h1>
           <p className="mt-1.5 text-xs leading-snug text-ppg-label">
             They&apos;ll scan it to charge {TOTAL_AMOUNT} on the store terminal
           </p>

@@ -4,6 +4,8 @@ import { AgentBarcode } from './AgentBarcode'
 
 const TOTAL_AMOUNT = '$17.66'
 const BOOKING_REF = 'PHAAADU17'
+const CASH_SUCCESS_SUBTITLE =
+  'Your booking is confirmed. Pay over the counter when you drop off your parcel.'
 const SHIPMENT_ORIGIN = 'Bondi Beach'
 const SHIPMENT_DESTINATION = '25 Spring St'
 
@@ -33,7 +35,7 @@ export function BookingSuccessScreen({ variant }: BookingSuccessScreenProps) {
           <h1 className="text-xl font-bold text-black">All Booked!</h1>
           <p className="mt-1.5 text-xs leading-snug text-ppg-label">
             {payAtAgent
-              ? 'Your booking is confirmed. Pay at the store when you drop off your parcel.'
+              ? CASH_SUCCESS_SUBTITLE
               : "You're all set! We've emailed your shipment details and digital receipt."}
           </p>
           <p className="mt-2 text-sm font-bold text-black">
@@ -46,7 +48,7 @@ export function BookingSuccessScreen({ variant }: BookingSuccessScreenProps) {
             className="w-full rounded-2xl border-2 border-ppg-orange bg-[#fff5f2] px-4 py-3 text-base font-bold leading-snug text-black"
             role="status"
           >
-            Please pay {TOTAL_AMOUNT} to the agent.
+            Please pay {TOTAL_AMOUNT} over the counter.
           </p>
         ) : null}
 
@@ -91,7 +93,7 @@ export function BookingSuccessScreen({ variant }: BookingSuccessScreenProps) {
             {BOOKING_REF}
           </p>
           <p className="mt-4 text-base font-bold text-black">
-            Show this to the agent
+            Show this at the counter.
           </p>
           <p className="mt-1 text-sm leading-snug text-ppg-label">
             They&apos;ll scan this barcode when you drop off your parcel at the

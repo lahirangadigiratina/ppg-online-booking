@@ -4,10 +4,7 @@ import { BOOKING_HELP_TEXT_CLASS } from '../layout/bookingStepStyles'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
 import { FormStepFooter } from '../ui/FormStepFooter'
-import {
-  isParcelSizePackagingComplete,
-  ParcelSizePackagingSection,
-} from './ParcelSizePackagingSection'
+import { ParcelSizePackagingSection } from './ParcelSizePackagingSection'
 
 type ParcelSizePackagingFormProps = {
   onBack: () => void
@@ -21,29 +18,15 @@ export function ParcelSizePackagingForm({
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
   const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
 
-  const canContinue = isParcelSizePackagingComplete(
-    selectedSizeId,
-    needsPackaging,
-  )
-
   return (
     <BookingStepShell
       onSubmit={(event) => {
         event.preventDefault()
-        if (!canContinue) return
         onContinue()
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton
-            type="submit"
-            disabled={!canContinue}
-            className={
-              canContinue
-                ? undefined
-                : 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
-            }
-          />
+          <ContinueButton type="submit" />
         </FormStepFooter>
       }
     >

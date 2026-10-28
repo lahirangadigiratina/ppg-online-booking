@@ -1,9 +1,6 @@
 import { useState } from 'react'
 import type { DoorBookingRoute } from '../../booking/bookingRoute'
-import {
-  isParcelSizePackagingComplete,
-  ParcelSizePackagingSection,
-} from '../parcel-size/ParcelSizePackagingSection'
+import { ParcelSizePackagingSection } from '../parcel-size/ParcelSizePackagingSection'
 import { BookingStepShell } from '../layout/BookingStepShell'
 import { StepHeading } from '../steps/StepHeading'
 import { ContinueButton } from '../ui/ContinueButton'
@@ -31,30 +28,15 @@ export function DeliveryDestinationStepForm({
   const [selectedSizeId, setSelectedSizeId] = useState<string | null>(null)
   const [needsPackaging, setNeedsPackaging] = useState<boolean | null>(null)
 
-  const parcelComplete = isParcelSizePackagingComplete(
-    selectedSizeId,
-    needsPackaging,
-  )
-  const canContinue = deliveryMethod !== null && parcelComplete
-
   return (
     <BookingStepShell
       onSubmit={(event) => {
         event.preventDefault()
-        if (!canContinue) return
         onContinue()
       }}
       footer={
         <FormStepFooter onBack={onBack}>
-          <ContinueButton
-            type="submit"
-            disabled={!canContinue}
-            className={
-              canContinue
-                ? undefined
-                : 'cursor-not-allowed opacity-50 hover:bg-ppg-orange'
-            }
-          />
+          <ContinueButton type="submit" />
         </FormStepFooter>
       }
     >
